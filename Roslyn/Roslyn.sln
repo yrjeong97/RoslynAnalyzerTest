@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31515.178
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Roslyn", "Roslyn.csproj", "{0FBEBA7E-F307-4C24-8559-76140CB1179A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0FBEBA7E-F307-4C24-8559-76140CB1179A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0FBEBA7E-F307-4C24-8559-76140CB1179A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0FBEBA7E-F307-4C24-8559-76140CB1179A}.Debug|x64.ActiveCfg = Debug|x64
+		{0FBEBA7E-F307-4C24-8559-76140CB1179A}.Debug|x64.Build.0 = Debug|x64
+		{0FBEBA7E-F307-4C24-8559-76140CB1179A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0FBEBA7E-F307-4C24-8559-76140CB1179A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0FBEBA7E-F307-4C24-8559-76140CB1179A}.Release|x64.ActiveCfg = Release|x64
+		{0FBEBA7E-F307-4C24-8559-76140CB1179A}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E117057C-8BA3-4AA7-A182-6C9A466A7BDF}
+	EndGlobalSection
+EndGlobal
