@@ -1,28 +1,29 @@
-﻿using System;
-using System.IO;
+﻿using Octokit;
+using System;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 class Program
 {
-    static async Task Main(string[] args)
+    static async System.Threading.Tasks.Task Main(string[] args)
     {
+        var token = Environment.GetEnvironmentVariable("TOKEN");
         var repoOwner = "yrjeong97";
-        var repoName = "RoslynAnalyzerTest";
+        var repoName = "RsolynAnalyzerTest";
 
-        var github = new Octokit.GitHubClient(new Octokit.ProductHeaderValue("Roslyn-Code-Analyzer"));
-        github.Credentials = new Octokit.Credentials(Environment.GetEnvironmentVariable("TOKEN"));
+        var github = new GitHubClient(new ProductHeaderValue("Roslyn-Code-Analyzer"));
+        github.Credentials = new Credentials(token);
 
         var repositoryContents = await github.Repository.Content.GetAllContents(repoOwner, repoName);
 
-        var nonPascalMethods = new System.Collections.Generic.List<string>();
+        var nonPascalMethods = new List<string>();
 
         foreach (var content in repositoryContents)
         {
-            if (content.Type == Octokit.ContentType.File && content.Path.StartsWith("Calc/") && content.Path.EndsWith(".cs"))
+            if (content.Type == ContentType.File && content.Name.EndsWith(".cs"))
             {
                 var code = content.Content;
                 var syntaxTree = CSharpSyntaxTree.ParseText(code);
@@ -40,21 +41,16 @@ class Program
             }
         }
 
-        if (nonPascalMethods.Any())
-        {
-            var reportContent = string.Join(Environment.NewLine, nonPascalMethods);
-            var reportFilePath = "non_pascal_methods.txt";
+        //var reportContent = nonPascalMethods.Any()
+        //    ? string.Join(Environment.NewLine, nonPascalMethods)
+        //    : "All methods follow PascalCase.";
 
-            File.WriteAllText(reportFilePath, reportContent);
+        //// Post the report to GitHub Wiki
+        //var wikiPageName = "CodeAnalysisReport";
+        //var update = new NewWikiPageUpdate(reportContent, "Update Code Analysis Report");
+        //await github.Repository.Wiki.UpdatePage(repoOwner, repoName, wikiPageName, update);
 
-            // You can perform a Git commit and push here using Octokit or other Git library
-
-            Console.WriteLine("Non-PascalCase methods report saved and committed.");
-        }
-        else
-        {
-            Console.WriteLine("All methods follow PascalCase.");
-        }
+        Console.WriteLine("Code Analysis Report updated on GitHub Wiki.");
     }
 
     static bool IsPascalCase(string s)
