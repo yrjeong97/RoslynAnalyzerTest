@@ -32,4 +32,4 @@ jobs:
           git commit -m "Add non-PascalCase methods report"
           git push origin main
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.ACTIONSTOKEN }}
