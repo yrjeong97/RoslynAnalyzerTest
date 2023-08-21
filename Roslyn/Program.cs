@@ -12,9 +12,9 @@ class Program
 {
     static async Task Main(string[] args)
     {
-        var token = "ACTIONSTOKEN";
-        var repoOwner = "owner";
-        var repoName = "repository";
+        var token = Environment.GetEnvironmentVariable("ACTIONSTOKEN");
+        var repoOwner = "yrjeong97";
+        var repoName = "RoslynAnalyzerTest";
 
         var github = new GitHubClient(new ProductHeaderValue("Roslyn-Code-Analyzer"));
         github.Credentials = new Credentials(token);
