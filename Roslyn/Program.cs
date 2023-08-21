@@ -10,7 +10,7 @@ class Program
 {
     static void Main(string[] args)
     {
-        var calcProjectPath = @"D:\RoslynAnalyzerTest\Calc"; // Calc 프로젝트 폴더 경로
+        var calcProjectPath = "Calc"; // Calc 프로젝트 폴더 경로
         var nonPascalMethods = new List<string>();
 
         var csFiles = Directory.GetFiles(calcProjectPath, "*.cs", SearchOption.AllDirectories);
