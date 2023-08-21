@@ -1,0 +1,32 @@
+name: Roslyn Code Analysis
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  analyze-code:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: 5.0.x
+
+      - name: Build and Run Roslyn Analysis
+        run: dotnet run --project Roslyn/Roslyn.csproj
+
+      - name: Commit and Push Report
+        run: |
+          git config user.name "yrjeong97"
+          git config user.email "yrjeong@ati2000.co.kr"
+          git add -f non_pascal_methods.txt
+          git commit -m "Add non-PascalCase methods report"
+          git push origin main
+        env:
+          GITHUB_TOKEN: ${{ secrets.ATIONCSTOKEN }}
