@@ -12,7 +12,7 @@ class Program
 {
     static async Task Main(string[] args)
     {
-        var token = Environment.GetEnvironmentVariable("GITHUB_TOKEN");
+        var token = Environment.GetEnvironmentVariable("TOKEN");
 
         var repoOwner = "yrjeong97";
         var repoName = "RoslynAnalyzerTest";
