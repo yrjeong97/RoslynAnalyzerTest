@@ -12,7 +12,7 @@ class Program
 {
     static async Task Main(string[] args)
     {
-        var token = Environment.GetEnvironmentVariable("TOKEN");
+        var token = "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";
 
         var repoOwner = "yrjeong97";
         var repoName = "RoslynAnalyzerTest";
