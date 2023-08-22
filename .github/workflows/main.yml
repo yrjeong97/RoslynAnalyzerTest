@@ -27,6 +27,7 @@ jobs:
           echo "Found project folders:"
           echo "$project_folders"
           echo "::set-output name=project_folders::$project_folders"
+          echo "$project_folders"
 
       - name: Check for Project Changes and Analyze
         id: check_changes_and_analyze
