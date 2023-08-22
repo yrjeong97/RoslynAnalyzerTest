@@ -90,12 +90,12 @@ namespace Calculator
         #endregion
 
         #region [private 메서드]
-        private void onPropertyChanged(string propertyName)
+        private void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private void GetNumber(object inputNumber)
+        private void ggetNumber(object inputNumber)
         {
             if (inputNumber != null)
             {
