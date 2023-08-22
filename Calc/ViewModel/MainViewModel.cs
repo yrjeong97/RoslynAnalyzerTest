@@ -90,7 +90,7 @@ namespace Calculator
         #endregion
 
         #region [private 메서드]
-        private void onjdakfjkd()
+        private void onjjkd()
         {
 
         }
