@@ -1,2 +1,2 @@
-Method 'getNumber' in file 'Calc/ViewModel/MainViewModel.cs' does not follow PascalCase
+Method 'onPropertyChanged' in file 'Calc/ViewModel/MainViewModel.cs' does not follow PascalCase
 Method 'add' in file 'Calc/Model/MainModel.cs' does not follow PascalCase
