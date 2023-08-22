@@ -33,11 +33,12 @@ jobs:
         run: |
           # Get the list of project folders from the previous step
           project_folders=${{ steps.find_folders.outputs.project_folders }}
+          echo "hi"
 
           # Loop through each project folder and analyze changed files
           for folder in $project_folders; do
             changes=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} -- "$folder")
-            echo "hi"
+            
             if [[ -n "$changes" ]]; then
               echo "Changed files in $folder:"
               echo "$changes"
