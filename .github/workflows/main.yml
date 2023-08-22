@@ -18,6 +18,9 @@ jobs:
         with:
           dotnet-version: 5.0.x
 
+      - name: Set up environment
+        run: echo "GITHUB_TOKEN=${{ secrets.TOKEN }}" >> $GITHUB_ENV
+
       - name: Restore dependencies
         run: dotnet restore Roslyn/Roslyn.csproj
 
