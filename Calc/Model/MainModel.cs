@@ -7,7 +7,7 @@ namespace Calculator
 {
     public class MainModel
     {
-        public void Add()
+        public void add()
         {
         }
     }
