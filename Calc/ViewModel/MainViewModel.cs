@@ -95,7 +95,7 @@ namespace Calculator
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private void GetNumber(object inputNumber)
+        private void getNumber(object inputNumber)
         {
             if (inputNumber != null)
             {

@@ -20,6 +20,7 @@ jobs:
 
       - name: Set up environment
         run: echo "GITHUB_TOKEN=${{ secrets.TOKEN }}" >> $GITHUB_ENV
+             echo "GITHUB_WORKSPACE=${{ github.workspace }}" >> $GITHUB_ENV
 
       - name: Restore dependencies
         run: dotnet restore Roslyn/Roslyn.csproj
