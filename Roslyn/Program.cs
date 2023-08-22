@@ -18,7 +18,7 @@ class Program
         var repoEmail = "yrjeong@ati2000.co.kr";
 
         var github = new GitHubClient(new ProductHeaderValue("Roslyn-Code-Analyzer"));
-        github.Credentials = new Credentials(token);
+        github.Credentials = new Octokit.Credentials(token);
 
         var repositoryContents = await github.Repository.Content.GetAllContents(repoOwner, repoName);
 
