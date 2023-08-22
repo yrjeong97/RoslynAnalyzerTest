@@ -31,7 +31,7 @@ class Program
             foreach (var method in methods)
             {
                 var methodName = method.Identifier.ValueText;
-                if (!IsPascalCase(methodName))
+                if (!isPascalCase(methodName))
                 {
                     nonPascalMethods.Add($"Method '{methodName}' in file '{csFile}' does not follow PascalCase");
                 }
@@ -52,7 +52,7 @@ class Program
         }
     }
 
-    static bool IsPascalCase(string s)
+    static bool isPascalCase(string s)
     {
         return !string.IsNullOrEmpty(s) && char.IsUpper(s[0]);
     }
