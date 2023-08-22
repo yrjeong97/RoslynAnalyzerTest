@@ -12,7 +12,7 @@ class Program
     {
         var token = Environment.GetEnvironmentVariable("GITHUB_TOKEN");
         var repoOwner = "yrjeong97";
-        var repoName = "RsolynAnalyzerTest";
+        var repoName = "RoslynAnalyzerTest";
 
         var github = new GitHubClient(new ProductHeaderValue("Roslyn-Code-Analyzer"));
         github.Credentials = new Credentials(token);
