@@ -25,14 +25,17 @@ jobs:
         run: dotnet restore Roslyn/Roslyn.csproj
 
       - name: Build and Run Roslyn Analysis
-        run: dotnet run --project Roslyn/Roslyn.csproj
+        run: |
+          dotnet build Roslyn/Roslyn.csproj --configuration Release --output ./output
+          dotnet run --project Roslyn/Roslyn.csproj --configuration Release --output ./output
+
 
       - name: Commit and Push Report
         run: |
           git config user.name "yrjeong97"
           git config user.email "yrjeong@ati2000.co.kr"
           if [[ -n "$(git status --porcelain)" ]]; then
-            git add non_pascal_methods.txt
+            git add ./output/non_pascal_methods.txt
             git commit -m "Add non-PascalCase methods report"
             git push origin main
           else
