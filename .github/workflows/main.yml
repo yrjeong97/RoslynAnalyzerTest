@@ -24,17 +24,15 @@ jobs:
 
           # Find all directories that contain .csproj files
           project_folders=$(find . -type f -name '*.csproj' -exec dirname {} \; | sort | uniq)
-          project_folders_string=$(echo "$project_folders" | tr '\n' ':')
           echo "Found project folders:"
-          echo "$project_folders_string"
-          echo "project_folders=$project_folders_string" >> $GITHUB_ENV
+          echo "$project_folders"
+          echo "::set-output name=project_folders::$project_folders"
 
       - name: Check for Project Changes and Analyze
         id: check_changes_and_analyze
         run: |
           # Get the list of project folders from the previous step
-          project_folders=$project_folders
-          #echo "DEBUG: project_folders: $project_folders"
+          project_folders=${{ steps.find_folders.outputs.project_folders }}
 
           # Loop through each project folder and analyze changed files
           for folder in $project_folders; do
