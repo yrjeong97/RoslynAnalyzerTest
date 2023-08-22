@@ -95,7 +95,7 @@ namespace Calculator
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private void gggetNumber(object inputNumber)
+        private void ggetNumber(object inputNumber)
         {
             if (inputNumber != null)
             {
