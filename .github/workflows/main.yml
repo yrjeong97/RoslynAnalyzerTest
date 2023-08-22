@@ -25,10 +25,7 @@ jobs:
         run: dotnet restore Roslyn/Roslyn.csproj
 
       - name: Build and Run Roslyn Analysis
-        run: |
-          dotnet build Roslyn/Roslyn.csproj --configuration Release --output ./output
-          dotnet run --project Roslyn/Roslyn.csproj --configuration Release --output ./output
-
+        run: dotnet run --project Roslyn/Roslyn.csproj
 
       - name: Commit and Push Report
         run: |

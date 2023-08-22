@@ -1,5 +1,5 @@
-﻿using Octokit;
-using System;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
@@ -8,49 +8,42 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 class Program
 {
-    static async System.Threading.Tasks.Task Main(string[] args)
+    static void Main(string[] args)
     {
-        var token = Environment.GetEnvironmentVariable("GITHUB_TOKEN");
-        var repoOwner = "yrjeong97";
-        var repoName = "RoslynAnalyzerTest";
-
-        var github = new GitHubClient(new ProductHeaderValue("Roslyn-Code-Analyzer"));
-        github.Credentials = new Credentials(token);
-
-        var repositoryContents = await github.Repository.Content.GetAllContents(repoOwner, repoName);
-
+        var calcProjectPath = "Calc"; // Calc 프로젝트 폴더 경로
         var nonPascalMethods = new List<string>();
 
-        foreach (var content in repositoryContents)
-        {
-            if (content.Type == ContentType.File && content.Name.EndsWith(".cs"))
-            {
-                var code = content.Content;
-                var syntaxTree = CSharpSyntaxTree.ParseText(code);
-                var root = syntaxTree.GetRoot();
-                var methods = root.DescendantNodes().OfType<MethodDeclarationSyntax>();
+        var csFiles = Directory.GetFiles(calcProjectPath, "*.cs", SearchOption.AllDirectories);
 
-                foreach (var method in methods)
+        foreach (var csFile in csFiles)
+        {
+            var code = File.ReadAllText(csFile);
+            var syntaxTree = CSharpSyntaxTree.ParseText(code);
+            var root = syntaxTree.GetRoot();
+            var methods = root.DescendantNodes().OfType<MethodDeclarationSyntax>();
+
+            foreach (var method in methods)
+            {
+                var methodName = method.Identifier.ValueText;
+                if (!IsPascalCase(methodName))
                 {
-                    var methodName = method.Identifier.ValueText;
-                    if (!IsPascalCase(methodName))
-                    {
-                        nonPascalMethods.Add($"Method '{methodName}' in file '{content.Name}' does not follow PascalCase");
-                    }
+                    nonPascalMethods.Add($"Method '{methodName}' in file '{csFile}' does not follow PascalCase");
                 }
             }
         }
 
-        //var reportContent = nonPascalMethods.Any()
-        //    ? string.Join(Environment.NewLine, nonPascalMethods)
-        //    : "All methods follow PascalCase.";
+        if (nonPascalMethods.Any())
+        {
+            var reportContent = string.Join(Environment.NewLine, nonPascalMethods);
+            var reportFilePath = "non_pascal_methods.txt";
 
-        //// Post the report to GitHub Wiki
-        //var wikiPageName = "CodeAnalysisReport";
-        //var update = new NewWikiPageUpdate(reportContent, "Update Code Analysis Report");
-        //await github.Repository.Wiki.UpdatePage(repoOwner, repoName, wikiPageName, update);
-
-        Console.WriteLine("Code Analysis Report updated on GitHub Wiki.");
+            File.WriteAllText(reportFilePath, reportContent);
+            Console.WriteLine("Non-PascalCase methods report saved.");
+        }
+        else
+        {
+            Console.WriteLine("All methods follow PascalCase.");
+        }
     }
 
     static bool IsPascalCase(string s)
