@@ -41,6 +41,15 @@ class Program
             }
         }
 
+        //var reportContent = nonPascalMethods.Any()
+        //    ? string.Join(Environment.NewLine, nonPascalMethods)
+        //    : "All methods follow PascalCase.";
+
+        //// Post the report to GitHub Wiki
+        //var wikiPageName = "CodeAnalysisReport";
+        //var update = new NewWikiPageUpdate(reportContent, "Update Code Analysis Report");
+        //await github.Repository.Wiki.UpdatePage(repoOwner, repoName, wikiPageName, update);
+
         Console.WriteLine("Code Analysis Report updated on GitHub Wiki.");
     }
 
