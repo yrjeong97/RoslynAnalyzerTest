@@ -90,6 +90,11 @@ namespace Calculator
         #endregion
 
         #region [private 메서드]
+        private void onjdakfjkd()
+        {
+
+        }
+        
         private void onPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
