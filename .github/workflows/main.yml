@@ -34,7 +34,7 @@ jobs:
         run: |
           # Get the list of project folders from the previous step
           project_folders=$project_folders
-          echo "DEBUG: project_folders: $project_folders"
+          #echo "DEBUG: project_folders: $project_folders"
 
           # Loop through each project folder and analyze changed files
           for folder in $project_folders; do
