@@ -1,7 +1,5 @@
 ﻿using Octokit;
-using LibGit2Sharp;
 using System;
-using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
@@ -15,10 +13,9 @@ class Program
         var token = Environment.GetEnvironmentVariable("GITHUB_TOKEN");
         var repoOwner = "yrjeong97";
         var repoName = "RoslynAnalyzerTest";
-        var repoEmail = "yrjeong@ati2000.co.kr";
 
         var github = new GitHubClient(new ProductHeaderValue("Roslyn-Code-Analyzer"));
-        github.Credentials = new Octokit.Credentials(token);
+        github.Credentials = new Credentials(token);
 
         var repositoryContents = await github.Repository.Content.GetAllContents(repoOwner, repoName);
 
@@ -44,28 +41,7 @@ class Program
             }
         }
 
-        var reportContent = nonPascalMethods.Any()
-            ? string.Join(Environment.NewLine, nonPascalMethods)
-            : "All methods follow PascalCase.";
-
-        // Save the report to a text file
-        var reportFilePath = "non_pascal_methods.txt";
-        File.WriteAllText(reportFilePath, reportContent);
-
-        // Commit and push the report file to the repository
-        var repoPath = Path.Combine(Environment.GetEnvironmentVariable("GITHUB_WORKSPACE"), repoName);
-        using (var repo = new LibGit2Sharp.Repository(repoPath))
-        {
-            Commands.Stage(repo, reportFilePath);
-            var sig = new LibGit2Sharp.Signature(repoOwner, repoEmail, DateTimeOffset.Now);
-            var commitMessage = "update text file";
-            repo.Commit(commitMessage, sig, sig);
-            var remote = repo.Network.Remotes["origin"];
-            var pushRefSpec = $"refs/heads/main:refs/heads/main";
-            repo.Network.Push(remote, pushRefSpec);
-        }     
-
-        Console.WriteLine("Non-PascalCase methods report saved and committed.");
+        Console.WriteLine("Code Analysis Report updated on GitHub Wiki.");
     }
 
     static bool IsPascalCase(string s)
