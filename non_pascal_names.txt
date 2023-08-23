@@ -6,6 +6,13 @@ line number: 39
 project name: NamingRule
 
 Pascal Rule
+method name: test
+class name: NamingRule
+File name: /home/runner/work/RoslynAnalyzerTest/RoslynAnalyzerTest/Roslyn/NamingRule.cs
+line number: 56
+project name: NamingRule
+
+Pascal Rule
 method name: onPropertyChanged
 class name: MainViewModel
 File name: /home/runner/work/RoslynAnalyzerTest/RoslynAnalyzerTest/Calc/ViewModel/MainViewModel.cs
