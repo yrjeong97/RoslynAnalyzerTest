@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System.Diagnostics;
 
 class Program
 {
@@ -28,7 +29,7 @@ class Program
                 {
                     nonPascalNames.Add($"Pascal Rule{Environment.NewLine}" +
                         $"class name: {className}{Environment.NewLine}" +
-                        $"File name: line {csFile}{Environment.NewLine}" +
+                        $"File name: {csFile}{Environment.NewLine}" +
                         $"line number: {classDeclaration.GetLocation().GetLineSpan().StartLinePosition.Line + 1}{Environment.NewLine}" +
                         $"project name: {Path.GetFileNameWithoutExtension(csFile)}{Environment.NewLine}");
                 }
@@ -52,7 +53,7 @@ class Program
         if (nonPascalNames.Any())
         {
             var reportContent = string.Join(Environment.NewLine, nonPascalNames);
-            var reportFilePath = "non_pascal_names.txt";
+            var reportFilePath = "non_pascal_names00.txt";
 
             File.WriteAllText(reportFilePath, reportContent);
             Console.WriteLine("Non-PascalCase names report saved.");
@@ -61,6 +62,8 @@ class Program
         {
             Console.WriteLine("All names follow PascalCase.");
         }
+
+
     }
 
     static bool IsPascalCase(string s)
