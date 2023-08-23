@@ -53,7 +53,7 @@ namespace Roslyn
             return !string.IsNullOrEmpty(s) && char.IsUpper(s[0]);
         }
 
-        void yyyyy()
+        void yyyy()
         {
             // 테스트입니다. josephine 0823
         }
