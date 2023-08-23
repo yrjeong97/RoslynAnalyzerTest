@@ -25,3 +25,10 @@ class name: MainModel
 File name: /home/runner/work/RoslynAnalyzerTest/RoslynAnalyzerTest/Calc/Model/MainModel.cs
 line number: 10
 project name: MainModel
+
+Pascal Rule
+method name: sub
+class name: MainModel
+File name: /home/runner/work/RoslynAnalyzerTest/RoslynAnalyzerTest/Calc/Model/MainModel.cs
+line number: 14
+project name: MainModel
