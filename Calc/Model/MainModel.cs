@@ -10,5 +10,10 @@ namespace Calculator
         public void add()
         {
         }
+
+        public void sub()
+        {
+
+        }
     }
 }
