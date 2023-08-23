@@ -31,12 +31,17 @@ jobs:
 
       - name: Analyze and Create Report File
         run: |
-          timestamp=$(date +"%Y%m%d%H%M%S")
+          timestamp=$(date +"%Y%m%d%H%M")
           reportFilePath="non_pascal_names_${timestamp}.txt"
           echo "Creating report file: $reportFilePath"
           cat roslyn_report.txt > $reportFilePath
           echo "::set-output name=reportFilePath::$reportFilePath"
         id: create_report
+
+      - name: Add Changes to Staging
+        run: |
+          git add non_pascal_names_*.txt roslyn_report.txt
+        id: add_changes
 
       - name: Commit and Push Report
         run: |
