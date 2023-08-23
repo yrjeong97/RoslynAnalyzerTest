@@ -1,5 +1,3 @@
-name: Roslyn Code Analysis
-
 on:
   push:
     branches:
@@ -18,18 +16,26 @@ jobs:
         with:
           dotnet-version: 5.0.x
 
+      - name: Set Project Path
+        run: echo "PROJECT_PATH=$(pwd)" >> $GITHUB_ENV
+
       - name: Restore dependencies
         run: dotnet restore Roslyn/Roslyn.csproj
 
       - name: Build and Run Roslyn Analysis
         run: dotnet run --project Roslyn/Roslyn.csproj
 
-      - name: Commit and Push Report
+       - name: Commit and Push Report
         run: |
           git config user.name "yrjeong97"
           git config user.email "yrjeong@ati2000.co.kr"
-          git add non_pascal_methods.txt
-          git commit -m "Add non-PascalCase methods report"
-          git push origin main
+          if [[ -n "$(git status --porcelain)" ]]; then
+            git add ./output/non_pascal_methods.txt
+            git commit -m "Add non-PascalCase methods report"
+            git push origin main
+          else
+            echo "No changes to commit."
+          fi
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
+          PROJECT_PATH: ${{ env.PROJECT_PATH }}

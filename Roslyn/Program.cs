@@ -10,10 +10,10 @@ class Program
 {
     static void Main(string[] args)
     {
-        var calcProjectPath = "Calc"; // Calc 프로젝트 폴더 경로
+        var projectPath = Environment.GetEnvironmentVariable("PROJECT_PATH");
         var nonPascalMethods = new List<string>();
 
-        var csFiles = Directory.GetFiles(calcProjectPath, "*.cs", SearchOption.AllDirectories);
+        var csFiles = Directory.GetFiles(projectPath, "*.cs", SearchOption.AllDirectories);
 
         foreach (var csFile in csFiles)
         {
