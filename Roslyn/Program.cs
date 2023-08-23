@@ -11,7 +11,7 @@ class Program
     static void Main(string[] args)
     {
         var projectPath = Environment.GetEnvironmentVariable("PROJECT_PATH");
-        var nonPascalMethods = new List<string>();
+        var nonPascalNames = new List<string>();
 
         var csFiles = Directory.GetFiles(projectPath, "*.cs", SearchOption.AllDirectories);
 
@@ -20,29 +20,39 @@ class Program
             var code = File.ReadAllText(csFile);
             var syntaxTree = CSharpSyntaxTree.ParseText(code);
             var root = syntaxTree.GetRoot();
-            var methods = root.DescendantNodes().OfType<MethodDeclarationSyntax>();
 
+            var classNames = root.DescendantNodes().OfType<ClassDeclarationSyntax>().Select(c => c.Identifier.ValueText);
+            foreach (var className in classNames)
+            {
+                if (!IsPascalCase(className))
+                {
+                    nonPascalNames.Add($"Class '{className}' in file '{csFile}' does not follow PascalCase");
+                }
+            }
+
+            // Check method names
+            var methods = root.DescendantNodes().OfType<MethodDeclarationSyntax>();
             foreach (var method in methods)
             {
                 var methodName = method.Identifier.ValueText;
                 if (!IsPascalCase(methodName))
                 {
-                    nonPascalMethods.Add($"Method '{methodName}' in file '{csFile}' does not follow PascalCase");
+                    nonPascalNames.Add($"Method '{methodName}' in file '{csFile}' does not follow PascalCase");
                 }
             }
         }
 
-        if (nonPascalMethods.Any())
+        if (nonPascalNames.Any())
         {
-            var reportContent = string.Join(Environment.NewLine, nonPascalMethods);
-            var reportFilePath = "non_pascal_methods.txt";
+            var reportContent = string.Join(Environment.NewLine, nonPascalNames);
+            var reportFilePath = "non_pascal_names.txt";
 
             File.WriteAllText(reportFilePath, reportContent);
-            Console.WriteLine("Non-PascalCase methods report saved.");
+            Console.WriteLine("Non-PascalCase names report saved.");
         }
         else
         {
-            Console.WriteLine("All methods follow PascalCase.");
+            Console.WriteLine("All names follow PascalCase.");
         }
     }
 
