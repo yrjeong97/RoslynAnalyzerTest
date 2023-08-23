@@ -15,7 +15,7 @@ namespace Roslyn
         string[] csFiles;
         List<string> nonPascalMethods;
 
-        public NamingRule(string[] csFiles)
+        public namingRule(string[] csFiles)
         {
             this.csFiles = csFiles;
             this.nonPascalMethods = new List<string>();
