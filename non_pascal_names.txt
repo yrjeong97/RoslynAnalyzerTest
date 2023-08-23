@@ -1,4 +1,18 @@
-Class 'namingRule' in file '/home/runner/work/RoslynAnalyzerTest/RoslynAnalyzerTest/Roslyn/NamingRule.cs' does not follow PascalCase
-Method 'checkPascalRule' in file '/home/runner/work/RoslynAnalyzerTest/RoslynAnalyzerTest/Roslyn/NamingRule.cs' does not follow PascalCase
-Method 'onPropertyChanged' in file '/home/runner/work/RoslynAnalyzerTest/RoslynAnalyzerTest/Calc/ViewModel/MainViewModel.cs' does not follow PascalCase
-Method 'add' in file '/home/runner/work/RoslynAnalyzerTest/RoslynAnalyzerTest/Calc/Model/MainModel.cs' does not follow PascalCase
+Pascal Rule
+method name: checkPascalRule
+class name: NamingRule
+File name: /home/runner/work/RoslynAnalyzerTest/RoslynAnalyzerTest/Roslyn/NamingRule.cs
+line number: 39
+project name: NamingRule
+Pascal Rule
+method name: getNumber
+class name: MainViewModel
+File name: /home/runner/work/RoslynAnalyzerTest/RoslynAnalyzerTest/Calc/ViewModel/MainViewModel.cs
+line number: 99
+project name: MainViewModel
+Pascal Rule
+method name: add
+class name: MainModel
+File name: /home/runner/work/RoslynAnalyzerTest/RoslynAnalyzerTest/Calc/Model/MainModel.cs
+line number: 10
+project name: MainModel
