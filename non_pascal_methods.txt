@@ -1,2 +1,2 @@
-Method 'getNumber' in file '/home/runner/work/RoslynAnalyzerTest/RoslynAnalyzerTest/Calc/ViewModel/MainViewModel.cs' does not follow PascalCase
+Method 'onPropertyChanged' in file '/home/runner/work/RoslynAnalyzerTest/RoslynAnalyzerTest/Calc/ViewModel/MainViewModel.cs' does not follow PascalCase
 Method 'add' in file '/home/runner/work/RoslynAnalyzerTest/RoslynAnalyzerTest/Calc/Model/MainModel.cs' does not follow PascalCase
