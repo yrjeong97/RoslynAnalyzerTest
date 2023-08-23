@@ -30,25 +30,25 @@ namespace Roslyn
                 var root = syntaxTree.GetRoot();
                 var methods = root.DescendantNodes().OfType<MethodDeclarationSyntax>();
 
-                checkPascalRule(methods, csFile);
+                CheckPascalRule(methods, csFile);
             }
 
             return nonPascalMethods;
         }
 
-        private void checkPascalRule(IEnumerable<MethodDeclarationSyntax>  methods, string csFile)
+        private void CheckPascalRule(IEnumerable<MethodDeclarationSyntax>  methods, string csFile)
         {
             foreach (var method in methods)
             {
                 var methodName = method.Identifier.ValueText;
-                if (!IsPascalCase(methodName))
+                if (!isPascalCase(methodName))
                 {
                     nonPascalMethods.Add($"Method '{methodName}' in file '{csFile}' does not follow PascalCase");
                 }
             }
         }
 
-        static bool IsPascalCase(string s)
+        static bool isPascalCase(string s)
         {
             return !string.IsNullOrEmpty(s) && char.IsUpper(s[0]);
         }

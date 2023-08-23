@@ -53,7 +53,7 @@ class Program
         if (nonPascalNames.Any())
         {
             var reportContent = string.Join(Environment.NewLine, nonPascalNames);
-            var reportFilePath = "non_pascal_names.txt";
+            var reportFilePath = "non_pascal_names00.txt";
 
             File.WriteAllText(reportFilePath, reportContent);
             Console.WriteLine("Non-PascalCase names report saved.");
