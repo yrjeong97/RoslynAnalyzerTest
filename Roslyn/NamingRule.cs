@@ -52,5 +52,10 @@ namespace Roslyn
         {
             return !string.IsNullOrEmpty(s) && char.IsUpper(s[0]);
         }
+
+        void test()
+        {
+
+        }
     }
 }
