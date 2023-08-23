@@ -13,53 +13,23 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Set up .NET
+      - name: Setup .NET
         uses: actions/setup-dotnet@v2
         with:
           dotnet-version: 5.0.x
 
-      - name: Set up environment
-        run: |
-          echo "GITHUB_TOKEN=${{ secrets.TOKEN }}" >> $GITHUB_ENV
+      - name: Restore dependencies
+        run: dotnet restore Roslyn/Roslyn.csproj
 
-          # Find all directories that contain .csproj files
-          project_folders=$(find . -type f -name '*.csproj' -exec dirname {} \; | sort | uniq)
-          echo "Found project folders:"
-          echo "$project_folders"
-          echo "::set-output name=project_folders::$project_folders"
-
-      - name: Check for Project Changes and Analyze
-        id: check_changes_and_analyze
-        run: |
-          # Get the list of project folders from the previous step
-          project_folders=${{ steps.find_folders.outputs.project_folders }}
-
-          # Loop through each project folder and analyze changed files
-          for folder in $project_folders; do
-            changes=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} -- "$folder")
-            if [[ -n "$changes" ]]; then
-              echo "Changed files in $folder:"
-              echo "$changes"
-
-              # Set PROJECT_PATH environment variable
-              echo "PROJECT_PATH=$folder" >> $GITHUB_ENV
-
-              # Analyze each .cs file in the changed project folder using Roslyn
-              dotnet build Roslyn/Roslyn.csproj --configuration Release --output ./output
-              dotnet run --project Roslyn/Roslyn.csproj --configuration Release --output ./output
-            fi
-          done
+      - name: Build and Run Roslyn Analysis
+        run: dotnet run --project Roslyn/Roslyn.csproj
 
       - name: Commit and Push Report
         run: |
           git config user.name "yrjeong97"
           git config user.email "yrjeong@ati2000.co.kr"
-          if [[ -n "$(git status --porcelain)" ]]; then
-            git add ./output/non_pascal_methods.txt
-            git commit -m "Add non-PascalCase methods report"
-            git push origin main
-          else
-            echo "No changes to commit."
-          fi
+          git add non_pascal_methods.txt
+          git commit -m "Add non-PascalCase methods report"
+          git push origin main
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}

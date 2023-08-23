@@ -90,17 +90,13 @@ namespace Calculator
         #endregion
 
         #region [private 메서드]
-        private void onjjkd()
-        {
-
-        }
         
-        private void onPropertyChanged(string propertyName)
+        private void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private void GetNumber(object inputNumber)
+        private void getNumber(object inputNumber)
         {
             if (inputNumber != null)
             {

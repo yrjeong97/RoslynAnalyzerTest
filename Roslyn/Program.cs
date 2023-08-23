@@ -10,16 +10,10 @@ class Program
 {
     static void Main(string[] args)
     {
-        var ProjectPath = Environment.GetEnvironmentVariable("PROJECT_PATH"); // Workflow 환경 변수를 사용하여 프로젝트 폴더 경로 받아오기
-        if (string.IsNullOrEmpty(ProjectPath))
-        {
-            Console.WriteLine("PROJECT_PATH environment variable not set.");
-            return;
-        }
-
+        var calcProjectPath = "Calc"; // Calc 프로젝트 폴더 경로
         var nonPascalMethods = new List<string>();
 
-        var csFiles = Directory.GetFiles(ProjectPath, "*.cs", SearchOption.AllDirectories);
+        var csFiles = Directory.GetFiles(calcProjectPath, "*.cs", SearchOption.AllDirectories);
 
         foreach (var csFile in csFiles)
         {
