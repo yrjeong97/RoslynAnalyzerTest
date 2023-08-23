@@ -30,7 +30,7 @@ class Program
                         $"class name: {className}{Environment.NewLine}" +
                         $"File name: line {csFile}{Environment.NewLine}" +
                         $"line number: {classDeclaration.GetLocation().GetLineSpan().StartLinePosition.Line + 1}{Environment.NewLine}" +
-                        $"project name: {Path.GetFileNameWithoutExtension(csFile)}");
+                        $"project name: {Path.GetFileNameWithoutExtension(csFile)}{Environment.NewLine}");
                 }
 
                 foreach (var method in classDeclaration.DescendantNodes().OfType<MethodDeclarationSyntax>())
@@ -43,7 +43,7 @@ class Program
                             $"class name: {className}{Environment.NewLine}" +
                             $"File name: {csFile}{Environment.NewLine}" +
                             $"line number: {method.GetLocation().GetLineSpan().StartLinePosition.Line + 1}{Environment.NewLine}" +
-                            $"project name: {Path.GetFileNameWithoutExtension(csFile)}");
+                            $"project name: {Path.GetFileNameWithoutExtension(csFile)}{Environment.NewLine}");
                     }
                 }
             }
