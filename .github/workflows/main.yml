@@ -30,7 +30,7 @@ jobs:
           git config user.name "yrjeong97"
           git config user.email "yrjeong@ati2000.co.kr"
           if [[ -n "$(git status --porcelain)" ]]; then
-            git add ./output/non_pascal_methods.txt
+            git add non_pascal_methods.txt
             git commit -m "Add non-PascalCase methods report"
             git push origin main
           else
