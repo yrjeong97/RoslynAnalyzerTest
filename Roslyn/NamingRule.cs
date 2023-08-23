@@ -10,12 +10,12 @@ namespace Roslyn
 {
     
 
-    class namingRule
+    class NamingRule
     {
         string[] csFiles;
         List<string> nonPascalMethods;
 
-        public namingRule(string[] csFiles)
+        public NamingRule(string[] csFiles)
         {
             this.csFiles = csFiles;
             this.nonPascalMethods = new List<string>();

@@ -21,23 +21,30 @@ class Program
             var syntaxTree = CSharpSyntaxTree.ParseText(code);
             var root = syntaxTree.GetRoot();
 
-            var classNames = root.DescendantNodes().OfType<ClassDeclarationSyntax>().Select(c => c.Identifier.ValueText);
-            foreach (var className in classNames)
+            foreach (var classDeclaration in root.DescendantNodes().OfType<ClassDeclarationSyntax>())
             {
+                var className = classDeclaration.Identifier.ValueText;
                 if (!IsPascalCase(className))
                 {
-                    nonPascalNames.Add($"Class '{className}' in file '{csFile}' does not follow PascalCase");
+                    nonPascalNames.Add($"Pascal Rule{Environment.NewLine}" +
+                        $"class name: {className}{Environment.NewLine}" +
+                        $"File name: line {csFile}{Environment.NewLine}" +
+                        $"line number: {classDeclaration.GetLocation().GetLineSpan().StartLinePosition.Line + 1}{Environment.NewLine}" +
+                        $"project name: {Path.GetFileNameWithoutExtension(csFile)}");
                 }
-            }
 
-            // Check method names
-            var methods = root.DescendantNodes().OfType<MethodDeclarationSyntax>();
-            foreach (var method in methods)
-            {
-                var methodName = method.Identifier.ValueText;
-                if (!IsPascalCase(methodName))
+                foreach (var method in classDeclaration.DescendantNodes().OfType<MethodDeclarationSyntax>())
                 {
-                    nonPascalNames.Add($"Method '{methodName}' in file '{csFile}' does not follow PascalCase");
+                    var methodName = method.Identifier.ValueText;
+                    if (!IsPascalCase(methodName))
+                    {
+                        nonPascalNames.Add($"Pascal Rule{Environment.NewLine}" +
+                            $"method name: {methodName}{Environment.NewLine}" +
+                            $"class name: {className}{Environment.NewLine}" +
+                            $"File name: {csFile}{Environment.NewLine}" +
+                            $"line number: {method.GetLocation().GetLineSpan().StartLinePosition.Line + 1}{Environment.NewLine}" +
+                            $"project name: {Path.GetFileNameWithoutExtension(csFile)}");
+                    }
                 }
             }
         }
