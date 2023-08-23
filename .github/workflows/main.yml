@@ -25,21 +25,17 @@ jobs:
         run: dotnet restore Roslyn/Roslyn.csproj
 
       - name: Build and Run Roslyn Analysis
-        run: dotnet run --project Roslyn/Roslyn.csproj
-
-      - name: Run Roslyn Analysis Script
-        run: dotnet run --project Roslyn/Roslyn.csproj
+        run: dotnet run --project Roslyn/Roslyn.csproj > roslyn_report.txt
         env:
           PROJECT_PATH: ${{ env.PROJECT_PATH }}
 
-      - name: Create Report File with Timestamp
+      - name: Analyze and Create Report File
         run: |
           timestamp=$(date +"%Y%m%d%H%M%S")
           reportFilePath="non_pascal_names_${timestamp}.txt"
           echo "Creating report file: $reportFilePath"
-          echo "Your report content here" > $reportFilePath
+          cat roslyn_report.txt > $reportFilePath
           echo "::set-output name=reportFilePath::$reportFilePath"
-          git add $reportFilePath  # 파일을 바로 스테이징 영역에 추가
         id: create_report
 
       - name: Commit and Push Report

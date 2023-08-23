@@ -11,6 +11,13 @@ class Program
 {
     static void Main(string[] args)
     {
+        if (args.Length != 1)
+        {
+            Console.WriteLine("Usage: Roslyn <reportFilePath>");
+            return;
+        }
+
+        var reportFilePath = args[0];
         var projectPath = Environment.GetEnvironmentVariable("PROJECT_PATH");
         var nonPascalNames = new List<string>();
 
@@ -53,7 +60,6 @@ class Program
         if (nonPascalNames.Any())
         {
             var reportContent = string.Join(Environment.NewLine, nonPascalNames);
-            var reportFilePath = "non_pascal_names00.txt";
 
             File.WriteAllText(reportFilePath, reportContent);
             Console.WriteLine("Non-PascalCase names report saved.");
