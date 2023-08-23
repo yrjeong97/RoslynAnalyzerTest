@@ -38,6 +38,8 @@ jobs:
           reportFilePath="non_pascal_names_${timestamp}.txt"
           echo "Creating report file: $reportFilePath"
           echo "Your report content here" > $reportFilePath
+          echo "::set-output name=reportFilePath::$reportFilePath"
+          git add $reportFilePath  # 파일을 바로 스테이징 영역에 추가
         id: create_report
 
       - name: Commit and Push Report
@@ -45,7 +47,6 @@ jobs:
           git config user.name "yrjeong97"
           git config user.email "yrjeong@ati2000.co.kr"
           if [[ -n "$(git status --porcelain)" ]]; then
-            git add non_pascal_names.txt
             git commit -m "Add non-PascalCase methods report"
             git push origin main
           else
