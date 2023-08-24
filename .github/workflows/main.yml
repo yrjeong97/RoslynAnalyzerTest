@@ -21,14 +21,6 @@ jobs:
       - name: Set Project Path
         run: echo "PROJECT_PATH=$(pwd)" >> $GITHUB_ENV
 
-      - name: Get Changed C# Files
-        id: get_changed_files
-        run: |
-          CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD -- '*.cs')
-          echo "Changed C# files: $CHANGED_FILES"
-          echo "::set-output name=changed_files::$CHANGED_FILES"
-        shell: bash
-
       - name: Restore dependencies
         run: dotnet restore Roslyn/Roslyn.csproj
 
@@ -43,10 +35,9 @@ jobs:
         id: create_report
 
       - name: Build and Run Roslyn Analysis
-        run: |
-          dotnet run --project Roslyn/Roslyn.csproj >> $REPORT_FILE_PATH
+        run: dotnet run --project Roslyn/Roslyn.csproj >> $REPORT_FILE_PATH
         env:
-          CHANGED_FILES: ${{ steps.get_changed_files.outputs.changed_files }}
+          PROJECT_PATH: ${{ env.PROJECT_PATH }}
           REPORT_FILE_PATH: ${{ env.REPORT_FILE_PATH }}
 
       - name: Add Changes to Staging

@@ -18,7 +18,7 @@ class Program
             Console.WriteLine("Report file path not specified.");
             return;
         }
-        var projectPath = Environment.GetEnvironmentVariable("CHANGED_FILES");
+        var projectPath = Environment.GetEnvironmentVariable("PROJECT_PATH");
         var nonPascalNames = new List<string>();
 
         var csFiles = Directory.GetFiles(projectPath, "*.cs", SearchOption.AllDirectories);
