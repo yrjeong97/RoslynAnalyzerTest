@@ -35,9 +35,14 @@ jobs:
         id: create_report
 
       - name: Build and Run Roslyn Analysis
-        run: dotnet run --project Roslyn/Roslyn.csproj --configuration Release --no-build -- > ${{ env.REPORT_FILE_PATH }}
+        run: dotnet run --project Roslyn/Roslyn.csproj > output.txt
         env:
           PROJECT_PATH: ${{ env.PROJECT_PATH }}
+          REPORT_FILE_PATH: ${{ env.REPORT_FILE_PATH }}
+
+      - name: Save Output to Report File
+        run: mv output.txt ${{ env.REPORT_FILE_PATH }}
+        env:
           REPORT_FILE_PATH: ${{ env.REPORT_FILE_PATH }}
 
       - name: Add Changes to Staging
