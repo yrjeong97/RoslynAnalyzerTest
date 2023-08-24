@@ -29,7 +29,7 @@ jobs:
           timestamp=$(date +"%Y%m%d%H%M")
           reportFilePath="non_pascal_names_${timestamp}.txt"
           echo "Creating report file: $reportFilePath"
-          cat roslyn_report.txt > $reportFilePath
+          echo "Your report content here" > $reportFilePath
           echo "::set-output name=reportFilePath::$reportFilePath"
           echo "REPORT_FILE_PATH=$reportFilePath" >> $GITHUB_ENV
         id: create_report
