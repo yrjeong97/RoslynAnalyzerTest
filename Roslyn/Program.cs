@@ -11,13 +11,13 @@ class Program
 {
     static void Main(string[] args)
     {
-        if (args.Length != 1)
+        var reportFilePath = Environment.GetEnvironmentVariable("REPORT_FILE_PATH");
+
+        if (string.IsNullOrEmpty(reportFilePath))
         {
-            Console.WriteLine("Usage: Roslyn <reportFilePath>");
+            Console.WriteLine("Report file path not specified.");
             return;
         }
-
-        var reportFilePath = args[0];
         var projectPath = Environment.GetEnvironmentVariable("PROJECT_PATH");
         var nonPascalNames = new List<string>();
 

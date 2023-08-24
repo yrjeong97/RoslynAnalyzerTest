@@ -36,11 +36,12 @@ jobs:
           echo "Creating report file: $reportFilePath"
           cat roslyn_report.txt > $reportFilePath
           echo "::set-output name=reportFilePath::$reportFilePath"
+          echo "REPORT_FILE_PATH=$reportFilePath" >> $GITHUB_ENV
         id: create_report
 
       - name: Add Changes to Staging
         run: |
-          git add non_pascal_names_*.txt roslyn_report.txt
+          git add non_pascal_names_*.txt
         id: add_changes
 
       - name: Commit and Push Report
@@ -48,7 +49,8 @@ jobs:
           git config user.name "yrjeong97"
           git config user.email "yrjeong@ati2000.co.kr"
           if [[ -n "$(git status --porcelain)" ]]; then
-            git commit -m "Add non-PascalCase methods report"
+            git commit -m "Add non-PascalCase report"
+            git diff-index --quiet HEAD || git commit -m "Add non-PascalCase names report"
             git push origin main
           else
             echo "No changes to commit."
