@@ -50,7 +50,7 @@ jobs:
           git config user.email "yrjeong@ati2000.co.kr"
           if [[ -n "$(git status --porcelain)" ]]; then
             git commit -m "Add non-PascalCase report"
-            git diff-index --quiet HEAD || git commit -m "Add non-PascalCase names report"
+            git diff-index --quiet HEAD -- ':!roslyn_report.txt' || git commit -m "Add non-PascalCase names report"
             git push origin main
           else
             echo "No changes to commit."
