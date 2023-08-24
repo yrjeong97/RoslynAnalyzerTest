@@ -53,7 +53,7 @@ namespace Roslyn
             return !string.IsNullOrEmpty(s) && char.IsUpper(s[0]);
         }
 
-        void adfadf()
+        void afdsadfdsf()
         {
             // 테스트입니다. josephine 0823
         }
