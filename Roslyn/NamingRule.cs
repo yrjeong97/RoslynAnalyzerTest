@@ -14,6 +14,7 @@ namespace Roslyn
     {
         string[] csFiles;
         List<string> nonPascalMethods;
+        int _bug1028 = 0;
 
         public NamingRule(string[] csFiles)
         {
@@ -56,6 +57,7 @@ namespace Roslyn
         void dfdfd()
         {
             // 테스트입니다. josephine 0823
+            // 테스트입니다. josephine 0824
         }
     }
 }
