@@ -42,11 +42,10 @@ jobs:
               dotnet run --project Roslyn/Roslyn.csproj -- $file >> $REPORT_FILE_PATH
             fi
           done
-        id: create_report
 
       - name: Add Changes to Staging
         run: |
-          git add $REPORT_FILE_PATH
+          git add ${{ env.REPORT_FILE_PATH }}
         id: add_changes
 
       - name: Commit and Push Report
@@ -63,3 +62,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
           PROJECT_PATH: ${{ env.PROJECT_PATH }}
+          REPORT_FILE_PATH: ${{ env.REPORT_FILE_PATH }}
