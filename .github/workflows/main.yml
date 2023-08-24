@@ -43,12 +43,14 @@ jobs:
           changed_files="${{ steps.get_changed_files.outputs.changed_files }}"
           for file in $changed_files; do
             if [[ $file == *.cs ]]; then
-              dotnet run --project Roslyn/Roslyn.csproj -- $file >> $REPORT_FILE_PATH
+              dotnet run --project Roslyn/Roslyn.csproj -- $file > temp_output.txt
+              cat temp_output.txt >> $REPORT_FILE_PATH
             fi
           done
         env:
           PROJECT_PATH: ${{ env.PROJECT_PATH }}
           REPORT_FILE_PATH: ${{ env.REPORT_FILE_PATH }}
+
 
       - name: Add Changes to Staging
         run: |
