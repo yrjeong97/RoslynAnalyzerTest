@@ -68,8 +68,6 @@ class Program
         {
             Console.WriteLine("All names follow PascalCase.");
         }
-
-
     }
 
     static bool IsPascalCase(string s)
