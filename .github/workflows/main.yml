@@ -33,19 +33,18 @@ jobs:
           timestamp=$(date +"%Y%m%d%H%M")
           reportFilePath="non_pascal_names_${timestamp}.txt"
           echo "Creating report file: $reportFilePath"
-          echo "::set-output name=reportFilePath::$reportFilePath"
           echo "REPORT_FILE_PATH=$reportFilePath" >> $GITHUB_ENV
 
           changed_files="${{ steps.get_changed_files.outputs.changed_files }}"
           for file in $changed_files; do
             if [[ $file == *.cs ]]; then
-              dotnet run --project Roslyn/Roslyn.csproj -- $file >> $REPORT_FILE_PATH
+              dotnet run --project Roslyn/Roslyn.csproj -- $file >> $reportFilePath
             fi
           done
 
       - name: Add Changes to Staging
         run: |
-          git add ${{ env.REPORT_FILE_PATH }}
+          git add $reportFilePath
         id: add_changes
 
       - name: Commit and Push Report
@@ -62,4 +61,3 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
           PROJECT_PATH: ${{ env.PROJECT_PATH }}
-          REPORT_FILE_PATH: ${{ env.REPORT_FILE_PATH }}
