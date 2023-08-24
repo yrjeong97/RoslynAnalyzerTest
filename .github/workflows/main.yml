@@ -24,7 +24,7 @@ jobs:
       - name: Get Changed C# Files
         id: get_changed_files
         run: |
-          CHANGED_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} -- '*.cs')
+          CHANGED_FILES=${{ steps.get_changed_files.outputs.files }}
           echo "Changed C# files: $CHANGED_FILES"
           echo "::set-output name=changed_files::$CHANGED_FILES"
         shell: bash
