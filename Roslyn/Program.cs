@@ -11,7 +11,7 @@ class Program
 {
     static void Main(string[] args)
     {
-        var reportFilePath = Environment.GetEnvironmentVariable("REPORT_FILE_PATH");
+        var reportFilePath = Environment.GetEnvironmentVariable("CHANGED_FILES ");
 
         if (string.IsNullOrEmpty(reportFilePath))
         {
