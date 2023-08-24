@@ -24,6 +24,10 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore Roslyn/Roslyn.csproj
 
+      - name: Get Changed Files
+        id: get_changed_files
+        run: echo "::set-output name=changed_files::$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})"
+
       - name: Analyze and Create Report File
         run: |
           timestamp=$(date +"%Y%m%d%H%M")
@@ -35,7 +39,13 @@ jobs:
         id: create_report
 
       - name: Build and Run Roslyn Analysis
-        run: dotnet run --project Roslyn/Roslyn.csproj > $REPORT_FILE_PATH
+        run: |
+          changed_files="${{ steps.get_changed_files.outputs.changed_files }}"
+          for file in $changed_files; do
+            if [[ $file == *.cs ]]; then
+              dotnet run --project Roslyn/Roslyn.csproj -- $file >> $REPORT_FILE_PATH
+            fi
+          done
         env:
           PROJECT_PATH: ${{ env.PROJECT_PATH }}
           REPORT_FILE_PATH: ${{ env.REPORT_FILE_PATH }}
