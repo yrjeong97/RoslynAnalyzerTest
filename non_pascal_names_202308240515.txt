@@ -1,0 +1,35 @@
+Pascal Rule
+method name: checkPascalRule
+class name: NamingRule
+File name: /home/runner/work/RoslynAnalyzerTest/RoslynAnalyzerTest/Roslyn/NamingRule.cs
+line number: 39
+project name: NamingRule
+
+Pascal Rule
+method name: aaaaaaaaa
+class name: NamingRule
+File name: /home/runner/work/RoslynAnalyzerTest/RoslynAnalyzerTest/Roslyn/NamingRule.cs
+line number: 56
+project name: NamingRule
+
+Pascal Rule
+method name: onPropertyChanged
+class name: MainViewModel
+File name: /home/runner/work/RoslynAnalyzerTest/RoslynAnalyzerTest/Calc/ViewModel/MainViewModel.cs
+line number: 94
+project name: MainViewModel
+
+Pascal Rule
+method name: add
+class name: MainModel
+File name: /home/runner/work/RoslynAnalyzerTest/RoslynAnalyzerTest/Calc/Model/MainModel.cs
+line number: 10
+project name: MainModel
+
+Pascal Rule
+method name: sub
+class name: MainModel
+File name: /home/runner/work/RoslynAnalyzerTest/RoslynAnalyzerTest/Calc/Model/MainModel.cs
+line number: 14
+project name: MainModel
+Non-PascalCase names report saved.
