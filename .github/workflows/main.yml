@@ -34,14 +34,8 @@ jobs:
           echo "REPORT_FILE_PATH=$reportFilePath" >> $GITHUB_ENV
         id: create_report
 
-      #- name: Build and Run Roslyn Analysis
-      #  run: dotnet run --project Roslyn/Roslyn.csproj > $REPORT_FILE_PATH
-      #  env:
-      #    PROJECT_PATH: ${{ env.PROJECT_PATH }}
-      #    REPORT_FILE_PATH: ${{ env.REPORT_FILE_PATH }}
-
       - name: Build and Run Roslyn Analysis
-        run: dotnet run --project Roslyn/Roslyn.csproj --configuration Release --no-build > $REPORT_FILE_PATH
+        run: dotnet run --project Roslyn/Roslyn.csproj --configuration Release --no-build -- > ${{ env.REPORT_FILE_PATH }}
         env:
           PROJECT_PATH: ${{ env.PROJECT_PATH }}
           REPORT_FILE_PATH: ${{ env.REPORT_FILE_PATH }}
