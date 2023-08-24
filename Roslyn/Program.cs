@@ -11,14 +11,14 @@ class Program
 {
     static void Main(string[] args)
     {
-        var reportFilePath = Environment.GetEnvironmentVariable("CHANGED_FILES ");
+        var reportFilePath = Environment.GetEnvironmentVariable("REPORT_FILE_PATH");
 
         if (string.IsNullOrEmpty(reportFilePath))
         {
             Console.WriteLine("Report file path not specified.");
             return;
         }
-        var projectPath = Environment.GetEnvironmentVariable("PROJECT_PATH");
+        var projectPath = Environment.GetEnvironmentVariable("CHANGED_FILES");
         var nonPascalNames = new List<string>();
 
         var csFiles = Directory.GetFiles(projectPath, "*.cs", SearchOption.AllDirectories);
