@@ -1,0 +1,62 @@
+name: Roslyn Analysis Workflow for linux
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  analyze-code:
+    runs-on: Linux
+    if: ${{contains(github.event.head_commit.message, '#QA'}}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: 5.0.x
+
+      - name: Set Project Path
+        run: echo "PROJECT_PATH=$(pwd)" >> $GITHUB_ENV
+
+      - name: Restore dependencies
+        run: dotnet restore Roslyn/Roslyn.csproj
+
+      - name: Analyze and Create Report File
+        run: |
+          timestamp=$(date +"%Y%m%d%H%M")
+          reportFilePath="non_pascal_names_${timestamp}.txt"
+          echo "Creating report file: $reportFilePath"
+          echo "" > $reportFilePath
+          echo "::set-output name=reportFilePath::$reportFilePath"
+          echo "REPORT_FILE_PATH=$reportFilePath" >> $GITHUB_ENV
+        id: create_report
+
+      - name: Build and Run Roslyn Analysis
+        run: dotnet run --project Roslyn/Roslyn.csproj >> $REPORT_FILE_PATH
+        env:
+          PROJECT_PATH: ${{ env.PROJECT_PATH }}
+          REPORT_FILE_PATH: ${{ env.REPORT_FILE_PATH }}
+
+      - name: Add Changes to Staging
+        run: |
+          git add $REPORT_FILE_PATH
+        id: add_changes
+
+      - name: Commit and Push Report
+        run: |
+          git config user.name "yrjeong97"
+          git config user.email "yrjeong@ati2000.co.kr"
+          if [[ -n "$(git status --porcelain)" ]]; then
+            git commit -m "Add non-PascalCase report"
+            git diff-index --quiet HEAD -- ':!roslyn_report.txt' || git commit -m "Add non-PascalCase names report"
+            git push origin main
+          else
+            echo "No changes to commit."
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+          PROJECT_PATH: ${{ env.PROJECT_PATH }}
