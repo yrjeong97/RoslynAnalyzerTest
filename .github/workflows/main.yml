@@ -24,9 +24,8 @@ jobs:
       - name: List changed files
         id: list_changed_files
         run: |
-          changed_files=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
+          changed_files=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} || true)
           echo "::set-output name=changed_files::$changed_files"
-
 
       - name: Restore dependencies
         run: dotnet restore Roslyn/Roslyn.csproj
