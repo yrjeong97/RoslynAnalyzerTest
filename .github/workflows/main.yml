@@ -10,9 +10,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:    
-      - name: Print event before
-        run: echo "Event before: ${{ github.event.before }}"
-
       - name: Checkout repository
         uses: actions/checkout@v2
 
@@ -27,6 +24,7 @@ jobs:
       - name: List changed files
         id: list_changed_files
         run: |
+          git fetch origin ${{ github.event.before }}:${{ github.event.before }}
           changed_files=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} || true)
           echo "::set-output name=changed_files::$changed_files"
 
