@@ -26,6 +26,7 @@ jobs:
         run: |
           git fetch origin ${{ github.event.before }}:${{ github.event.before }}
           changed_files=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} || true)
+          echo git diff --name-only ${{ github.event.before }}:${{ github.event.before }}
           echo "::set-output name=changed_files::$changed_files"
 
       - name: Restore dependencies
