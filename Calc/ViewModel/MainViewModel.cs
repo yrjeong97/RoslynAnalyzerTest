@@ -18,8 +18,7 @@ namespace Calculator
         string unuseds;
         string jipgagosipda;
         #endregion
-
-
+        
         #region [이벤트 핸들러]
         public event PropertyChangedEventHandler PropertyChanged;
         #endregion

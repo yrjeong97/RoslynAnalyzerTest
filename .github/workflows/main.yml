@@ -21,6 +21,11 @@ jobs:
       - name: Set Project Path
         run: echo "PROJECT_PATH=$(pwd)" >> $GITHUB_ENV
 
+      - name: List changed files
+        id: list_changed_files
+        run: |
+          echo "::set-output name=changed_files::$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})"
+
       - name: Restore dependencies
         run: dotnet restore Roslyn/Roslyn.csproj
 
@@ -35,7 +40,14 @@ jobs:
         id: create_report
 
       - name: Build and Run Roslyn Analysis
-        run: dotnet run --project Roslyn/Roslyn.csproj >> $REPORT_FILE_PATH
+        run: |
+          changed_files="${{ steps.list_changed_files.outputs.changed_files }}"
+          IFS=$'\n' read -rd '' -a file_list <<<"$changed_files"
+          for file in "${file_list[@]}"; do
+            if [[ "$file" =~ \.cs$ ]]; then
+              dotnet run --project Roslyn/Roslyn.csproj -- $file >> $REPORT_FILE_PATH
+            fi
+          done
         env:
           PROJECT_PATH: ${{ env.PROJECT_PATH }}
           REPORT_FILE_PATH: ${{ env.REPORT_FILE_PATH }}
