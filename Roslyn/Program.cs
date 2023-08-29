@@ -71,7 +71,7 @@ class Program
         }
     }
 
-    static bool isPascalCase(string s)
+    static bool IsPascalCase(string s)
     {
         return !string.IsNullOrEmpty(s) && char.IsUpper(s[0]);
     }

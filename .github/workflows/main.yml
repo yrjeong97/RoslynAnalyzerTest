@@ -45,7 +45,7 @@ jobs:
           IFS=$'\n' read -rd '' -a file_list <<<"$changed_files"
           for file in "${file_list[@]}"; do
             if [[ "$file" =~ \.cs$ ]]; then
-              dotnet run --project Roslyn/Roslyn.csproj -- $file >> $REPORT_FILE_PATH
+              dotnet run --project Roslyn/Roslyn.csproj >> $REPORT_FILE_PATH
             fi
           done
         env:
