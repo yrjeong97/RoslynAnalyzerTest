@@ -9,7 +9,10 @@ jobs:
   analyze-code:
     runs-on: ubuntu-latest
 
-    steps:
+    steps:    
+      - name: Print event before
+        run: echo "Event before: ${{ github.event.before }}"
+
       - name: Checkout repository
         uses: actions/checkout@v2
 
