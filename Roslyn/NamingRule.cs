@@ -22,7 +22,7 @@ namespace Roslyn
             this.csFilesList = csFilesList;
         }
 
-        public void checkPascalCase()
+        public void CheckPascalCase()
         {
             var nonPascalNames = new List<string>();
             foreach (var csFile in csFilesList)
@@ -62,7 +62,7 @@ namespace Roslyn
             }
         }
 
-        void CreateContents(List<string> contents, string reportFilePath)
+        void createContents(List<string> contents, string reportFilePath)
         {
             if (contents.Any())
             {
