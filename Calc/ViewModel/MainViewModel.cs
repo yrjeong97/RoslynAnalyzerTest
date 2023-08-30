@@ -90,7 +90,7 @@ namespace Calculator
 
         #region [private 메서드]
         
-        private void tesetstest()
+        private void adfadf()
         {
 
         }
