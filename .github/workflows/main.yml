@@ -24,9 +24,10 @@ jobs:
       - name: List changed files
         id: list_changed_files
         run: |
-          #git fetch origin ${{ github.event.before }}:${{ github.event.before }}
+          git fetch origin ${{ github.event.before }}:${{ github.event.before }}
           changed_files=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} || true)
           changed_cs_files=$(echo "$changed_files" | grep '\.cs$' || true)
+          echo git diff --name-only ${{ github.event.before }}:${{ github.event.before }}
           echo "CHANGED_FILES=$changed_cs_files" >> $GITHUB_ENV
 
       - name: Restore dependencies
