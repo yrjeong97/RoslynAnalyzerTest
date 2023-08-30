@@ -1,0 +1,14 @@
+Pascal Rule
+method name: checkPascalRule
+class name: NamingRule
+File name: Roslyn/NamingRule.cs
+line number: 39
+project name: NamingRule
+
+Pascal Rule
+method name: agdagadsgd
+class name: NamingRule
+File name: Roslyn/NamingRule.cs
+line number: 56
+project name: NamingRule
+Non-PascalCase names report saved.
