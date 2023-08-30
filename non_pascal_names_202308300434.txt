@@ -1,0 +1,14 @@
+Pascal Rule
+method name: fadsgdgg
+class name: MainViewModel
+File name: Calc/ViewModel/MainViewModel.cs
+line number: 93
+project name: MainViewModel
+
+Pascal Rule
+method name: onPropertyChanged
+class name: MainViewModel
+File name: Calc/ViewModel/MainViewModel.cs
+line number: 98
+project name: MainViewModel
+Non-PascalCase names report saved.
