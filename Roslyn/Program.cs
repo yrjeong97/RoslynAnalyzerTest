@@ -24,8 +24,8 @@ class Program
         var csFilesList = changedFiles.Split(';');
 
 
-        //NamingRule namingRule = new NamingRule(reportFilePath, projectPath, csFilesList);
-        //namingRule.checkPascalCase();    
+        NamingRule namingRule = new NamingRule(reportFilePath, projectPath, csFilesList);
+        namingRule.checkPascalCase();    
     }
 
     
