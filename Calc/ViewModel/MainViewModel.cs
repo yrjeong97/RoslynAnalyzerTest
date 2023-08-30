@@ -90,6 +90,11 @@ namespace Calculator
 
         #region [private 메서드]
         
+        private void tesetstest()
+        {
+
+        }
+
         private void onPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

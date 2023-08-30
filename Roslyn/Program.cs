@@ -12,6 +12,7 @@ class Program
     static void Main(string[] args)
     {
         var reportFilePath = Environment.GetEnvironmentVariable("REPORT_FILE_PATH");
+        var changedFiles = Environment.GetEnvironmentVariable("CHANGED_FILES");
 
         if (string.IsNullOrEmpty(reportFilePath))
         {
@@ -21,14 +22,15 @@ class Program
         var projectPath = Environment.GetEnvironmentVariable("PROJECT_PATH");
         var nonPascalNames = new List<string>();
 
-        var csFiles = Directory.GetFiles(projectPath, "*.cs", SearchOption.AllDirectories);
+        var csFilesList = changedFiles.Split(';'); // Assuming the names are semicolon separated
 
-        foreach (var csFile in csFiles)
+        foreach (var csFile in csFilesList)
         {
-            var code = File.ReadAllText(csFile);
+            var fullPath = Path.Combine(projectPath, csFile);
+            var code = File.ReadAllText(fullPath);
             var syntaxTree = CSharpSyntaxTree.ParseText(code);
             var root = syntaxTree.GetRoot();
-            var relativeFilePath = csFile.Substring(projectPath.Length).TrimStart('\\', '/');
+            var relativeFilePath = fullPath.Substring(projectPath.Length).TrimStart('\\', '/');
 
             foreach (var classDeclaration in root.DescendantNodes().OfType<ClassDeclarationSyntax>())
             {
