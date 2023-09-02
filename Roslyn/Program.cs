@@ -46,12 +46,22 @@ class Program
         }
     }
 
-    const int TTTT_TT = 0;
-    const int TT_St = 1;
-    const int Test = 1;
-    const int testest = 1;
-    const int MAX_INTEGER = 0;
-    const int MAX1 = 1;
-    const int PI = 3;
+    public interface IShape
+    {
+        double CalculateArea();
+        double CalculatePerimeter();
+    }
+
+    public interface Shape
+    {
+        double CalculateArea();
+        double CalculatePerimeter();
+    }
+
+    public interface shape
+    {
+        double CalculateArea();
+        double CalculatePerimeter();
+    }
 
 }

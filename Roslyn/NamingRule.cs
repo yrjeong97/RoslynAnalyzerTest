@@ -71,6 +71,8 @@ namespace Roslyn
                         }
                     }
                 }
+
+                //상수
                 foreach (var constDeclaration in root.DescendantNodes().OfType<FieldDeclarationSyntax>())
                 {
                     if (constDeclaration.Modifiers.Any(SyntaxKind.ConstKeyword))
@@ -84,6 +86,17 @@ namespace Roslyn
                                 nonPascalNames.Add(WriteNoneUpperSnakeCaseConstant(constantName, csFile, lineNum));
                             }
                         }
+                    }
+                }
+
+                //인터페이스
+                foreach (var interfaceDeclaration in root.DescendantNodes().OfType<InterfaceDeclarationSyntax>())
+                {
+                    var interfaceName = interfaceDeclaration.Identifier.ValueText;
+                    if (!IsInterfaceNameValid(interfaceName))
+                    {
+                        int lineNum = interfaceDeclaration.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
+                        nonPascalNames.Add(WriteNoneValidInterfaceName(interfaceName, csFile, lineNum));
                     }
                 }
             }            
@@ -129,6 +142,12 @@ namespace Roslyn
         bool IsUpperSnakeCase(string s)
         {
             return !string.IsNullOrEmpty(s) && s.All(c => c == '_' || char.IsUpper(c) || char.IsDigit(c));
+        }
+
+        bool IsInterfaceNameValid(string s)
+        {
+            // 인터페이스 이름이 'I'로 시작하지 않으면 유효하지 않다고 판단
+            return s.StartsWith("I", StringComparison.Ordinal);
         }
 
         string WriteNonePascalClass(string className, string csFile, int lineNum )
@@ -202,6 +221,17 @@ namespace Roslyn
                         $"project name: {Path.GetFileNameWithoutExtension(csFile)}{Environment.NewLine}";
 
             return NoneUpperSnakeCaseConstant;
+        }
+
+        string WriteNoneValidInterfaceName(string interfaceName, string csFile, int lineNum)
+        {
+            string NoneValidInterfaceName = $"Interface Name Rule{Environment.NewLine}" +
+                        $"interface name: {interfaceName}{Environment.NewLine}" +
+                        $"File name: {csFile}{Environment.NewLine}" +
+                        $"line number: {lineNum}{Environment.NewLine}" +
+                        $"project name: {Path.GetFileNameWithoutExtension(csFile)}{Environment.NewLine}";
+
+            return NoneValidInterfaceName;
         }
     }
 }
