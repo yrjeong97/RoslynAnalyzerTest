@@ -1,0 +1,13 @@
+Camel Rule
+field name: Value
+class name: Program
+File name: Roslyn/Program.cs
+line number: 49
+project name: Program
+
+Pascal Rule
+property name: dddd
+File name: Roslyn/Program.cs
+class name: Program
+line number: 56
+project name: Program
