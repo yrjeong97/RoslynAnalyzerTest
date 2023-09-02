@@ -27,7 +27,7 @@ class Program
         csFilesList = csFilesList.Skip(1).ToArray(); ;
 
         NamingRule namingRule = new NamingRule(csFilesList, projectPath, reportFilePath);
-        List<string> nonPascalNames = namingRule.CheckPascal();
+        List<string> nonPascalNames = namingRule.AnalyzeNamingRule();
         WriteResult(nonPascalNames, reportFilePath);
 
     }
@@ -46,7 +46,7 @@ class Program
         }
     }
 
-    string test
+    string aaaaa
     {
         get;
         set;
