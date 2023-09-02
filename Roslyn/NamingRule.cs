@@ -30,7 +30,8 @@ namespace Roslyn
             {
                 var fullPath = Path.Combine(projectPath, csFile);
                 var code = File.ReadAllText(fullPath);
-                AnalyzePascal(fullPath, code, csFile);               
+                AnalyzePascal(fullPath, code, csFile);
+                WriteResult();
             }
         }
 
