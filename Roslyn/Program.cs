@@ -22,7 +22,7 @@ class Program
         var projectPath = Environment.GetEnvironmentVariable("PROJECT_PATH");
         var nonPascalNames = new List<string>();
 
-        var csFilesList = changedFiles.Split(' '); // Assuming the names are semicolon separated
+        var csFilesList = changedFiles.Split(';'); // Assuming the names are semicolon separated
 
         foreach (var csFile in csFilesList)
         {
@@ -76,5 +76,10 @@ class Program
     static bool IsPascalCase(string s)
     {
         return !string.IsNullOrEmpty(s) && char.IsUpper(s[0]);
+    }
+
+    void asdf()
+    {
+
     }
 }
