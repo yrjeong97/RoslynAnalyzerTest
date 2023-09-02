@@ -23,6 +23,7 @@ class Program
         var nonPascalNames = new List<string>();
 
         var csFilesList = changedFiles.Split(';'); // Assuming the names are semicolon separated
+        csFilesList = csFilesList.Skip(1).ToArray(); ;
 
         foreach (var csFile in csFilesList)
         {
@@ -78,7 +79,7 @@ class Program
         return !string.IsNullOrEmpty(s) && char.IsUpper(s[0]);
     }
 
-    void aaa()
+    void ddd()
     {
 
     }
