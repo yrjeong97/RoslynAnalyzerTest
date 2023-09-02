@@ -30,7 +30,7 @@ class Program
             var code = File.ReadAllText(fullPath);
             var syntaxTree = CSharpSyntaxTree.ParseText(code);
             var root = syntaxTree.GetRoot();
-            var relativeFilePath = fullPath.Substring(projectPath.Length).TrimStart('\\', '/');
+            //var relativeFilePath = fullPath.Substring(projectPath.Length).TrimStart('\\', '/');
 
             foreach (var classDeclaration in root.DescendantNodes().OfType<ClassDeclarationSyntax>())
             {
@@ -39,7 +39,7 @@ class Program
                 {
                     nonPascalNames.Add($"Pascal Rule{Environment.NewLine}" +
                         $"class name: {className}{Environment.NewLine}" +
-                        $"File name: {relativeFilePath}{Environment.NewLine}" +
+                        $"File name: {csFile}{Environment.NewLine}" +
                         $"line number: {classDeclaration.GetLocation().GetLineSpan().StartLinePosition.Line + 1}{Environment.NewLine}" +
                         $"project name: {Path.GetFileNameWithoutExtension(csFile)}{Environment.NewLine}");
                 }
@@ -52,7 +52,7 @@ class Program
                         nonPascalNames.Add($"Pascal Rule{Environment.NewLine}" +
                             $"method name: {methodName}{Environment.NewLine}" +
                             $"class name: {className}{Environment.NewLine}" +
-                            $"File name: {relativeFilePath}{Environment.NewLine}" +
+                            $"File name: {csFile}{Environment.NewLine}" +
                             $"line number: {method.GetLocation().GetLineSpan().StartLinePosition.Line + 1}{Environment.NewLine}" +
                             $"project name: {Path.GetFileNameWithoutExtension(csFile)}{Environment.NewLine}");
                     }
