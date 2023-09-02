@@ -64,7 +64,10 @@ namespace Roslyn
                         }
                         else if (member is FieldDeclarationSyntax field)
                         {
-                            AnalyzerVariableCamel(field, csFile, className);
+                            if (!field.Modifiers.Any(SyntaxKind.ConstKeyword))
+                            {
+                                AnalyzerVariableCamel(field, csFile, className);
+                            }
                         }
                     }
                 }

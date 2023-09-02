@@ -50,5 +50,7 @@ class Program
     const int TT_St = 1;
     const int Test = 1;
     const int testest = 1;
+    const int MAX_INTEGER = 0;
+    const int MAX1 = 1;
 
 }
