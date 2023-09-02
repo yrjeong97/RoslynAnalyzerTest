@@ -52,5 +52,6 @@ class Program
     const int testest = 1;
     const int MAX_INTEGER = 0;
     const int MAX1 = 1;
+    const int PI = 3;
 
 }

@@ -128,7 +128,7 @@ namespace Roslyn
 
         bool IsUpperSnakeCase(string s)
         {
-            return !string.IsNullOrEmpty(s) && s.All(char.IsUpper) && s.All(c => c == '_' || char.IsLetterOrDigit(c));
+            return !string.IsNullOrEmpty(s) && s.All(c => c == '_' || char.IsUpper(c) || char.IsDigit(c));
         }
 
         string WriteNonePascalClass(string className, string csFile, int lineNum )
