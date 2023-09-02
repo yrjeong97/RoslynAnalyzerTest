@@ -32,75 +32,59 @@ namespace Roslyn
                 var syntaxTree = CSharpSyntaxTree.ParseText(code);
                 var root = syntaxTree.GetRoot();
 
-                foreach (var classDeclaration in root.DescendantNodes().OfType<ClassDeclarationSyntax>())
-                {
-                    var className = classDeclaration.Identifier.ValueText;
-                    if (!IsPascalCase(className))
-                    {
-                        int lineNum = classDeclaration.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
-                        nonPascalNames.Add(WriteNonePascalClass(className, csFile, lineNum));
-                    }
-
-                    foreach (var member in classDeclaration.Members)
-                    {
-                        if (member is MethodDeclarationSyntax method)
-                        {
-                            var methodName = method.Identifier.ValueText;
-                            if (!IsPascalCase(methodName))
-                            {
-                                int lineNum = method.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
-                                nonPascalNames.Add(WriteNonePascalMethod(methodName, className, csFile, lineNum));
-                            }
-                            AnalyzeParameterCamel(method, csFile, className);
-                        }
-                        else if (member is PropertyDeclarationSyntax property)
-                        {
-                            var propertyName = property.Identifier.ValueText;
-                            if (!IsPascalCase(propertyName))
-                            {
-                                int lineNum = property.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
-                                nonPascalNames.Add(WriteNonePascalProperty(propertyName, className, csFile, lineNum));
-                            }
-                        }
-                        else if (member is FieldDeclarationSyntax field)
-                        {
-                            if (!field.Modifiers.Any(SyntaxKind.ConstKeyword))
-                            {
-                                AnalyzerVariableCamel(field, csFile, className);
-                            }
-                        }
-                    }
-                }
+                //Pascal And Camel
+                AnayzePascalAndCamel(root, csFile);
 
                 //상수
-                foreach (var constDeclaration in root.DescendantNodes().OfType<FieldDeclarationSyntax>())
+                AnalyzeConstantUpperSnake(root, csFile);
+
+                //인터페이스
+                AnalyzeInterfaceRule(root, csFile);
+            }            
+            return nonPascalNames;
+        }
+
+        void AnayzePascalAndCamel(SyntaxNode root, string csFile)
+        {
+            foreach (var classDeclaration in root.DescendantNodes().OfType<ClassDeclarationSyntax>())
+            {
+                var className = classDeclaration.Identifier.ValueText;
+                if (!IsPascalCase(className))
                 {
-                    if (constDeclaration.Modifiers.Any(SyntaxKind.ConstKeyword))
+                    int lineNum = classDeclaration.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
+                    nonPascalNames.Add(WriteNamingRuleReport.WriteNonePascalClass(className, csFile, lineNum));
+                }
+
+                foreach (var member in classDeclaration.Members)
+                {
+                    if (member is MethodDeclarationSyntax method)
                     {
-                        foreach (var variable in constDeclaration.Declaration.Variables)
+                        var methodName = method.Identifier.ValueText;
+                        if (!IsPascalCase(methodName))
                         {
-                            var constantName = variable.Identifier.ValueText;
-                            if (!IsUpperSnakeCase(constantName))
-                            {
-                                int lineNum = constDeclaration.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
-                                nonPascalNames.Add(WriteNoneUpperSnakeCaseConstant(constantName, csFile, lineNum));
-                            }
+                            int lineNum = method.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
+                            nonPascalNames.Add(WriteNamingRuleReport.WriteNonePascalMethod(methodName, className, csFile, lineNum));
+                        }
+                        AnalyzeParameterCamel(method, csFile, className);
+                    }
+                    else if (member is PropertyDeclarationSyntax property)
+                    {
+                        var propertyName = property.Identifier.ValueText;
+                        if (!IsPascalCase(propertyName))
+                        {
+                            int lineNum = property.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
+                            nonPascalNames.Add(WriteNamingRuleReport.WriteNonePascalProperty(propertyName, className, csFile, lineNum));
+                        }
+                    }
+                    else if (member is FieldDeclarationSyntax field)
+                    {
+                        if (!field.Modifiers.Any(SyntaxKind.ConstKeyword))
+                        {
+                            AnalyzeVariableCamel(field, csFile, className);
                         }
                     }
                 }
-
-                //인터페이스
-                foreach (var interfaceDeclaration in root.DescendantNodes().OfType<InterfaceDeclarationSyntax>())
-                {
-                    var interfaceName = interfaceDeclaration.Identifier.ValueText;
-                    if (!IsInterfaceNameValid(interfaceName))
-                    {
-                        int lineNum = interfaceDeclaration.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
-                        nonPascalNames.Add(WriteNoneValidInterfaceName(interfaceName, csFile, lineNum));
-                    }
-                }
-            }            
-            return nonPascalNames;
+            }
         }
 
         void AnalyzeParameterCamel(MethodDeclarationSyntax method, string csFile, string className)
@@ -111,12 +95,12 @@ namespace Roslyn
                 if (!IsCamelCase(parameterName))
                 {
                     int lineNum = parameter.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
-                    nonPascalNames.Add(WriteNoneCamelParameter(parameterName, method.Identifier.ValueText, className, csFile, lineNum));
+                    nonPascalNames.Add(WriteNamingRuleReport.WriteNoneCamelParameter(parameterName, method.Identifier.ValueText, className, csFile, lineNum));
                 }
             }
         }
 
-        void AnalyzerVariableCamel(FieldDeclarationSyntax field, string csFile, string className)
+        void AnalyzeVariableCamel(FieldDeclarationSyntax field, string csFile, string className)
         {
             foreach (var variable in field.Declaration.Variables)
             {
@@ -124,7 +108,39 @@ namespace Roslyn
                 if (!IsCamelCase(fieldName))
                 {
                     int lineNum = field.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
-                    nonPascalNames.Add(WriteNoneCamelVariable(fieldName, className, csFile,lineNum));
+                    nonPascalNames.Add(WriteNamingRuleReport.WriteNoneCamelVariable(fieldName, className, csFile,lineNum));
+                }
+            }
+        }
+
+        void AnalyzeConstantUpperSnake(SyntaxNode root, string csFile)
+        {
+            foreach (var constDeclaration in root.DescendantNodes().OfType<FieldDeclarationSyntax>())
+            {
+                if (constDeclaration.Modifiers.Any(SyntaxKind.ConstKeyword))
+                {
+                    foreach (var variable in constDeclaration.Declaration.Variables)
+                    {
+                        var constantName = variable.Identifier.ValueText;
+                        if (!IsUpperSnakeCase(constantName))
+                        {
+                            int lineNum = constDeclaration.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
+                            nonPascalNames.Add(WriteNamingRuleReport.WriteNoneUpperSnakeCaseConstant(constantName, csFile, lineNum));
+                        }
+                    }
+                }
+            }
+        }
+
+        void AnalyzeInterfaceRule(SyntaxNode root, string csFile)
+        {
+            foreach (var interfaceDeclaration in root.DescendantNodes().OfType<InterfaceDeclarationSyntax>())
+            {
+                var interfaceName = interfaceDeclaration.Identifier.ValueText;
+                if (!IsInterfaceNameValid(interfaceName))
+                {
+                    int lineNum = interfaceDeclaration.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
+                    nonPascalNames.Add(WriteNamingRuleReport.WriteNoneValidInterfaceName(interfaceName, csFile, lineNum));
                 }
             }
         }
@@ -150,7 +166,12 @@ namespace Roslyn
             return s.StartsWith("I", StringComparison.Ordinal);
         }
 
-        string WriteNonePascalClass(string className, string csFile, int lineNum )
+       
+    }
+
+    static class WriteNamingRuleReport
+    {
+        static public string WriteNonePascalClass(string className, string csFile, int lineNum)
         {
             string NonePascalClass = $"Pascal Rule{Environment.NewLine}" +
                         $"class name: {className}{Environment.NewLine}" +
@@ -161,7 +182,7 @@ namespace Roslyn
             return NonePascalClass;
         }
 
-        string WriteNonePascalMethod(string methodName, string className, string csFile, int lineNum)
+        static public string WriteNonePascalMethod(string methodName, string className, string csFile, int lineNum)
         {
 
             string NonePascalMethod = $"Pascal Rule{Environment.NewLine}" +
@@ -174,7 +195,7 @@ namespace Roslyn
             return NonePascalMethod;
         }
 
-        string WriteNonePascalProperty(string propertyName, string className, string csFile, int lineNum)
+        static public string WriteNonePascalProperty(string propertyName, string className, string csFile, int lineNum)
         {
 
             string NonePascalProperty = $"Pascal Rule{Environment.NewLine}" +
@@ -187,7 +208,7 @@ namespace Roslyn
             return NonePascalProperty;
         }
 
-        string WriteNoneCamelParameter(string parameterName, string method, string className, string csFile, int lineNum)
+        static public string WriteNoneCamelParameter(string parameterName, string method, string className, string csFile, int lineNum)
         {
             string NoneCamelParameter = $"Camel Rule{Environment.NewLine}" +
                         $"parameter name: {parameterName}{Environment.NewLine}" +
@@ -200,7 +221,7 @@ namespace Roslyn
             return NoneCamelParameter;
         }
 
-        string WriteNoneCamelVariable(string fieldName, string className, string csFile, int lineNum)
+        static public string WriteNoneCamelVariable(string fieldName, string className, string csFile, int lineNum)
         {
             string NoneCamelVariable = $"Camel Rule{Environment.NewLine}" +
                         $"field name: {fieldName}{Environment.NewLine}" +
@@ -212,7 +233,7 @@ namespace Roslyn
             return NoneCamelVariable;
         }
 
-        string WriteNoneUpperSnakeCaseConstant(string constantName, string csFile, int lineNum)
+        static public string WriteNoneUpperSnakeCaseConstant(string constantName, string csFile, int lineNum)
         {
             string NoneUpperSnakeCaseConstant = $"UpperSnakeCase Rule{Environment.NewLine}" +
                         $"constant name: {constantName}{Environment.NewLine}" +
@@ -223,7 +244,7 @@ namespace Roslyn
             return NoneUpperSnakeCaseConstant;
         }
 
-        string WriteNoneValidInterfaceName(string interfaceName, string csFile, int lineNum)
+        static public string WriteNoneValidInterfaceName(string interfaceName, string csFile, int lineNum)
         {
             string NoneValidInterfaceName = $"Interface Name Rule{Environment.NewLine}" +
                         $"interface name: {interfaceName}{Environment.NewLine}" +

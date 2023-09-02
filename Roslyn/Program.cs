@@ -46,22 +46,17 @@ class Program
         }
     }
 
-    public interface IShape
+    void adkjfkd(int S)
     {
-        double CalculateArea();
-        double CalculatePerimeter();
+
     }
 
-    public interface Shape
-    {
-        double CalculateArea();
-        double CalculatePerimeter();
-    }
+    const int dkfjk = 0;
+    const int TDS_dfd = 1;
 
-    public interface shape
+    interface adf
     {
-        double CalculateArea();
-        double CalculatePerimeter();
+
     }
 
 }
