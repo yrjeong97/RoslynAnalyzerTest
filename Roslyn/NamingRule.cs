@@ -8,7 +8,6 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslyn
 {  
-
     public class NamingRule
     {
         string[] csFilesList;
@@ -52,31 +51,44 @@ namespace Roslyn
                         $"project name: {Path.GetFileNameWithoutExtension(csFile)}{Environment.NewLine}");
                 }
 
-                foreach (var method in classDeclaration.DescendantNodes().OfType<MethodDeclarationSyntax>())
+                foreach (var member in classDeclaration.Members)
                 {
-                    var methodName = method.Identifier.ValueText;
-                    if (!IsPascalCase(methodName))
+                    if (member is MethodDeclarationSyntax method)
                     {
-                        nonPascalNames.Add($"Pascal Rule{Environment.NewLine}" +
-                            $"method name: {methodName}{Environment.NewLine}" +
-                            $"class name: {className}{Environment.NewLine}" +
-                            $"File name: {csFile}{Environment.NewLine}" +
-                            $"line number: {method.GetLocation().GetLineSpan().StartLinePosition.Line + 1}{Environment.NewLine}" +
-                            $"project name: {Path.GetFileNameWithoutExtension(csFile)}{Environment.NewLine}");
+                        var methodName = method.Identifier.ValueText;
+                        if (!IsPascalCase(methodName))
+                        {
+                            nonPascalNames.Add($"Pascal Rule{Environment.NewLine}" +
+                                $"method name: {methodName}{Environment.NewLine}" +
+                                $"class name: {className}{Environment.NewLine}" +
+                                $"File name: {csFile}{Environment.NewLine}" +
+                                $"line number: {method.GetLocation().GetLineSpan().StartLinePosition.Line + 1}{Environment.NewLine}" +
+                                $"project name: {Path.GetFileNameWithoutExtension(csFile)}{Environment.NewLine}");
+                        }
                     }
+                    else if (member is PropertyDeclarationSyntax property)
+                    {
+                        var propertyName = property.Identifier.ValueText;
+                        if (!IsPascalCase(propertyName))
+                        {
+                            nonPascalNames.Add($"Pascal Rule{Environment.NewLine}" +
+                                $"property name: {propertyName}{Environment.NewLine}" +
+                                $"class name: {className}{Environment.NewLine}" +
+                                $"File name: {csFile}{Environment.NewLine}" +
+                                $"line number: {property.GetLocation().GetLineSpan().StartLinePosition.Line + 1}{Environment.NewLine}" +
+                                $"project name: {Path.GetFileNameWithoutExtension(csFile)}{Environment.NewLine}");
+                        }
+                    }           
                 }
             }
         }
-
-
-
         static bool IsPascalCase(string s)
         {
             return !string.IsNullOrEmpty(s) && char.IsUpper(s[0]);
         }
     }
 
-    class dddd
+    class Pascal
     {
 
     }
