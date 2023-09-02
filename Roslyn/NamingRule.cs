@@ -9,52 +9,87 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 namespace Roslyn
 {  
 
-    class NamingRule
+    public class NamingRule
     {
-        string[] csFiles;
-        List<string> nonPascalMethods;
+        string[] csFilesList;
+        string projectPath;
+        string reportFilePath;
+        List<string> nonPascalNames;
 
-        public NamingRule(string[] csFiles)
+        public NamingRule(string[] csFilesList, string projectPath, string reportFilePath)
         {
-            this.csFiles = csFiles;
-            this.nonPascalMethods = new List<string>();
+            this.csFilesList = csFilesList;
+            this.projectPath = projectPath;
+            this.reportFilePath = reportFilePath;
+            this.nonPascalNames = new List<string>();
         }
 
-        public List<string> AnalyeNamingRule()
+        void CheckPascal()
         {
-            foreach (var csFile in csFiles)
+            foreach (var csFile in csFilesList)
             {
-                var code = File.ReadAllText(csFile);
-                var syntaxTree = CSharpSyntaxTree.ParseText(code);
-                var root = syntaxTree.GetRoot();
-                var methods = root.DescendantNodes().OfType<MethodDeclarationSyntax>();
-
-                CheckPascalRule(methods, csFile);
+                var fullPath = Path.Combine(projectPath, csFile);
+                var code = File.ReadAllText(fullPath);
+                AnalyzePascal(fullPath, code, csFile);               
             }
-
-            return nonPascalMethods;
         }
 
-        private void CheckPascalRule(IEnumerable<MethodDeclarationSyntax>  methods, string csFile)
+        void AnalyzePascal(string fullPath, string code, string csFile)
         {
-            foreach (var method in methods)
+            var syntaxTree = CSharpSyntaxTree.ParseText(code);
+            var root = syntaxTree.GetRoot();
+
+            foreach (var classDeclaration in root.DescendantNodes().OfType<ClassDeclarationSyntax>())
             {
-                var methodName = method.Identifier.ValueText;
-                if (!isPascalCase(methodName))
+                var className = classDeclaration.Identifier.ValueText;
+                if (!IsPascalCase(className))
                 {
-                    nonPascalMethods.Add($"Method '{methodName}' in file '{csFile}' does not follow PascalCase");
+                    nonPascalNames.Add($"Pascal Rule{Environment.NewLine}" +
+                        $"class name: {className}{Environment.NewLine}" +
+                        $"File name: {csFile}{Environment.NewLine}" +
+                        $"line number: {classDeclaration.GetLocation().GetLineSpan().StartLinePosition.Line + 1}{Environment.NewLine}" +
+                        $"project name: {Path.GetFileNameWithoutExtension(csFile)}{Environment.NewLine}");
+                }
+
+                foreach (var method in classDeclaration.DescendantNodes().OfType<MethodDeclarationSyntax>())
+                {
+                    var methodName = method.Identifier.ValueText;
+                    if (!IsPascalCase(methodName))
+                    {
+                        nonPascalNames.Add($"Pascal Rule{Environment.NewLine}" +
+                            $"method name: {methodName}{Environment.NewLine}" +
+                            $"class name: {className}{Environment.NewLine}" +
+                            $"File name: {csFile}{Environment.NewLine}" +
+                            $"line number: {method.GetLocation().GetLineSpan().StartLinePosition.Line + 1}{Environment.NewLine}" +
+                            $"project name: {Path.GetFileNameWithoutExtension(csFile)}{Environment.NewLine}");
+                    }
                 }
             }
         }
 
-        static bool isPascalCase(string s)
+        void WriteResult()
+        {
+            if (nonPascalNames.Any())
+            {
+                var reportContent = string.Join(Environment.NewLine, nonPascalNames);
+
+                File.WriteAllText(reportFilePath, reportContent);
+                Console.WriteLine("Non-PascalCase names report saved.");
+            }
+            else
+            {
+                Console.WriteLine("All names follow PascalCase.");
+            }
+        }
+
+        static bool IsPascalCase(string s)
         {
             return !string.IsNullOrEmpty(s) && char.IsUpper(s[0]);
         }
+    }
 
-        void adfdfadsf()
-        {
+    class dkjfkd
+    {
 
-        }
     }
 }
