@@ -21,14 +21,21 @@ jobs:
       - name: Set Project Path
         run: echo "PROJECT_PATH=$(pwd)" >> $GITHUB_ENV
 
-      - name: List changed files
-        id: list_changed_files
+      #- name: List changed files
+      #  id: list_changed_files
+      #  run: |
+      #    git fetch origin ${{ github.event.before }}:${{ github.event.before }}
+      #    changed_files=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} || true)
+      #    changed_cs_files=$(echo "$changed_files" | grep '\.cs$' || true)
+      #    echo git diff --name-only ${{ github.event.before }}:${{ github.event.before }}
+      #    echo "CHANGED_FILES=$changed_cs_files" >> $GITHUB_ENV
+
+      - name: List all changed files
         run: |
-          git fetch origin ${{ github.event.before }}:${{ github.event.before }}
-          changed_files=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} || true)
-          changed_cs_files=$(echo "$changed_files" | grep '\.cs$' || true)
-          echo git diff --name-only ${{ github.event.before }}:${{ github.event.before }}
-          echo "CHANGED_FILES=$changed_cs_files" >> $GITHUB_ENV
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            echo "$file was changed"            
+          done
+          echo "CHANGED_FILES=${{ steps.changed-files.outputs.all_changed_files }}" >> $GITHUB_ENV
 
       - name: Restore dependencies
         run: dotnet restore Roslyn/Roslyn.csproj
