@@ -30,7 +30,7 @@ class Program
             var code = File.ReadAllText(fullPath);
             var syntaxTree = CSharpSyntaxTree.ParseText(code);
             var root = syntaxTree.GetRoot();
-            //var relativeFilePath = fullPath.Substring(projectPath.Length).TrimStart('\\', '/');
+            var relativeFilePath = fullPath.Substring(projectPath.Length).TrimStart('\\', '/');
 
             foreach (var classDeclaration in root.DescendantNodes().OfType<ClassDeclarationSyntax>())
             {
