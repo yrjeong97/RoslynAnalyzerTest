@@ -48,7 +48,7 @@ class Program
 
     int Value;
 
-    void TESTMethod(string s)
+    void TESTMethod(string S)
     {
 
     }
