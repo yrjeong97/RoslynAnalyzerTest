@@ -26,7 +26,7 @@ class Program
 
         foreach (var csFile in csFilesList)
         {
-            var fullPath = Path.Combine(projectPath, csFile);
+            var fullPath = Path.Combine(projectPath, csFile).Replace(" ","");
             var code = File.ReadAllText(fullPath);
             var syntaxTree = CSharpSyntaxTree.ParseText(code);
             var root = syntaxTree.GetRoot();
