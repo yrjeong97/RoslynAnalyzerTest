@@ -1,0 +1,7 @@
+Pascal Rule
+method name: sss
+class name: Program
+File name: Roslyn/Program.cs
+line number: 81
+project name: Program
+Non-PascalCase names report saved.
