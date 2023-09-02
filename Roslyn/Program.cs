@@ -60,21 +60,21 @@ class Program
         //    }
         //}
 
-        //if (nonPascalNames.Any())
-        //{
-        //    var reportContent = string.Join(Environment.NewLine, nonPascalNames);
+        if (nonPascalNames.Any())
+        {
+            var reportContent = string.Join(Environment.NewLine, nonPascalNames);
 
-        //    File.WriteAllText(reportFilePath, reportContent);
-        //    Console.WriteLine("Non-PascalCase names report saved.");
-        //}
-        //else
-        //{
-        //    Console.WriteLine("All names follow PascalCase.");
-        //}
+            File.WriteAllText(reportFilePath, reportContent);
+            Console.WriteLine("Non-PascalCase names report saved.");
+        }
+        else
+        {
+            Console.WriteLine("All names follow PascalCase.");
+        }
     }
 
     static bool IsPascalCase(string s)
-    {s
+    {
         return !string.IsNullOrEmpty(s) && char.IsUpper(s[0]);
     }
 }
