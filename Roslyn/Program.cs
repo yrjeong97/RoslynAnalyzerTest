@@ -21,13 +21,14 @@ class Program
             return;
         }
         var projectPath = Environment.GetEnvironmentVariable("PROJECT_PATH");
-        var nonPascalNames = new List<string>();
+        //var nonPascalNames = new List<string>();
 
         var csFilesList = changedFiles.Split(';'); 
         csFilesList = csFilesList.Skip(1).ToArray(); ;
 
         NamingRule namingRule = new NamingRule(csFilesList, projectPath, reportFilePath);
-
+        List<string> nonPascalNames = namingRule.CheckPascal();
+        WriteResult(nonPascalNames, reportFilePath);
 
         //foreach (var csFile in csFilesList)
         //{
@@ -76,6 +77,22 @@ class Program
         //{
         //    Console.WriteLine("All names follow PascalCase.");
         //}
+
+    }
+
+    static void WriteResult(List<string> reportList, string reportFilePath)
+    {
+        if (reportList.Any())
+        {
+            var reportContent = string.Join(Environment.NewLine, reportList);
+
+            File.WriteAllText(reportFilePath, reportContent);
+            Console.WriteLine("Non-PascalCase names report saved.");
+        }
+        else
+        {
+            Console.WriteLine("All names follow PascalCase.");
+        }
     }
 
     //static bool IsPascalCase(string s)

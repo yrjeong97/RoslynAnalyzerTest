@@ -24,15 +24,15 @@ namespace Roslyn
             this.nonPascalNames = new List<string>();
         }
 
-        void CheckPascal()
+        public List<string> CheckPascal()
         {
             foreach (var csFile in csFilesList)
             {
                 var fullPath = Path.Combine(projectPath, csFile);
                 var code = File.ReadAllText(fullPath);
                 AnalyzePascal(fullPath, code, csFile);
-                WriteResult();
             }
+            return nonPascalNames;
         }
 
         void AnalyzePascal(string fullPath, string code, string csFile)
@@ -68,20 +68,7 @@ namespace Roslyn
             }
         }
 
-        void WriteResult()
-        {
-            if (nonPascalNames.Any())
-            {
-                var reportContent = string.Join(Environment.NewLine, nonPascalNames);
 
-                File.WriteAllText(reportFilePath, reportContent);
-                Console.WriteLine("Non-PascalCase names report saved.");
-            }
-            else
-            {
-                Console.WriteLine("All names follow PascalCase.");
-            }
-        }
 
         static bool IsPascalCase(string s)
         {
@@ -89,7 +76,7 @@ namespace Roslyn
         }
     }
 
-    class dkjfkd
+    class dddd
     {
 
     }
