@@ -12,6 +12,8 @@ jobs:
     steps:    
       - name: Checkout repository
         uses: actions/checkout@v2
+        with: 
+          fetch-depth: 0
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v2
@@ -20,6 +22,19 @@ jobs:
 
       - name: Set Project Path
         run: echo "PROJECT_PATH=$(pwd)" >> $GITHUB_ENV
+
+      # Example 1
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v38
+
+      # NOTE: `since_last_remote_commit: true` is implied by default and falls back to the previous local commit.
+
+      - name: List all changed files
+        run: |
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            echo "$file was changed"
+          done
 
       #- name: List changed files
       #  id: list_changed_files
@@ -30,12 +45,12 @@ jobs:
       #    echo git diff --name-only ${{ github.event.before }}:${{ github.event.before }}
       #    echo "CHANGED_FILES=$changed_cs_files" >> $GITHUB_ENV
 
-      - name: List all changed files
-        run: |
-          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-            echo "$file was changed"            
-          done
-          echo "CHANGED_FILES=${{ steps.changed-files.outputs.all_changed_files }}" >> $GITHUB_ENV
+      #- name: List all changed files
+      #  run: |
+      #    for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+      #      echo "$file was changed"            
+      #    done
+      #    echo "CHANGED_FILES=${{ steps.changed-files.outputs.all_changed_files }}" >> $GITHUB_ENV
 
       - name: Restore dependencies
         run: dotnet restore Roslyn/Roslyn.csproj
