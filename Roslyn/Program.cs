@@ -22,7 +22,7 @@ class Program
         var projectPath = Environment.GetEnvironmentVariable("PROJECT_PATH");
         var nonPascalNames = new List<string>();
 
-        var csFilesList = changedFiles.Split(';'); // Assuming the names are semicolon separated
+        var csFilesList = changedFiles.Split(' '); // Assuming the names are semicolon separated
 
         foreach (var csFile in csFilesList)
         {
@@ -30,7 +30,7 @@ class Program
             var code = File.ReadAllText(fullPath);
             var syntaxTree = CSharpSyntaxTree.ParseText(code);
             var root = syntaxTree.GetRoot();
-            var relativeFilePath = fullPath.Substring(projectPath.Length).TrimStart('\\', '/');
+            //var relativeFilePath = fullPath.Substring(projectPath.Length).TrimStart('\\', '/');
 
             foreach (var classDeclaration in root.DescendantNodes().OfType<ClassDeclarationSyntax>())
             {
