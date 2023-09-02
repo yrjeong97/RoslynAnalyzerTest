@@ -151,7 +151,7 @@ namespace Roslyn
         {
             string NoneCamelParameter = $"Camel Rule{Environment.NewLine}" +
                         $"parameter name: {parameterName}{Environment.NewLine}" +
-                        $"method name: {}{Environment.NewLine}" +
+                        $"method name: {method}{Environment.NewLine}" +
                         $"class name: {className}{Environment.NewLine}" +
                         $"File name: {csFile}{Environment.NewLine}" +
                         $"line number: {lineNum}{Environment.NewLine}" +
