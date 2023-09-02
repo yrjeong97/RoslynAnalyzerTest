@@ -1,0 +1,44 @@
+Camel Rule
+field name: TTTT_TT
+class name: Program
+File name: Roslyn/Program.cs
+line number: 49
+project name: Program
+
+Camel Rule
+field name: TT_St
+class name: Program
+File name: Roslyn/Program.cs
+line number: 50
+project name: Program
+
+Camel Rule
+field name: Test
+class name: Program
+File name: Roslyn/Program.cs
+line number: 51
+project name: Program
+
+UpperSnakeCase Rule
+constant name: TTTT_TT
+File name: Roslyn/Program.cs
+line number: 49
+project name: Program
+
+UpperSnakeCase Rule
+constant name: TT_St
+File name: Roslyn/Program.cs
+line number: 50
+project name: Program
+
+UpperSnakeCase Rule
+constant name: Test
+File name: Roslyn/Program.cs
+line number: 51
+project name: Program
+
+UpperSnakeCase Rule
+constant name: testest
+File name: Roslyn/Program.cs
+line number: 52
+project name: Program
