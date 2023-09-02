@@ -46,16 +46,9 @@ class Program
         }
     }
 
-    int Value;
+    const int TTTT_TT = 0;
+    const int TT_St = 1;
+    const int Test = 1;
+    const int testest = 1;
 
-    void TESTMethod(string S)
-    {
-
-    }
-    
-    string dddd
-    {
-        get;
-        set;
-    }
 }

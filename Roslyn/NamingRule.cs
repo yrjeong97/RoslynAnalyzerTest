@@ -68,8 +68,22 @@ namespace Roslyn
                         }
                     }
                 }
-            }
-
+                foreach (var constDeclaration in root.DescendantNodes().OfType<FieldDeclarationSyntax>())
+                {
+                    if (constDeclaration.Modifiers.Any(SyntaxKind.ConstKeyword))
+                    {
+                        foreach (var variable in constDeclaration.Declaration.Variables)
+                        {
+                            var constantName = variable.Identifier.ValueText;
+                            if (!IsUpperSnakeCase(constantName))
+                            {
+                                int lineNum = constDeclaration.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
+                                nonPascalNames.Add(WriteNoneUpperSnakeCaseConstant(constantName, csFile, lineNum));
+                            }
+                        }
+                    }
+                }
+            }            
             return nonPascalNames;
         }
 
@@ -99,7 +113,6 @@ namespace Roslyn
             }
         }
 
-
         static bool IsPascalCase(string s)
         {
             return !string.IsNullOrEmpty(s) && char.IsUpper(s[0]);
@@ -108,6 +121,11 @@ namespace Roslyn
         bool IsCamelCase(string s)
         {
             return !string.IsNullOrEmpty(s) && char.IsLower(s[0]) && s.All(char.IsLetterOrDigit);
+        }
+
+        bool IsUpperSnakeCase(string s)
+        {
+            return !string.IsNullOrEmpty(s) && s.All(char.IsUpper) && s.All(c => c == '_' || char.IsLetterOrDigit(c));
         }
 
         string WriteNonePascalClass(string className, string csFile, int lineNum )
@@ -171,10 +189,16 @@ namespace Roslyn
 
             return NoneCamelVariable;
         }
-    }
 
-    class dfskfjldk
-    {
+        string WriteNoneUpperSnakeCaseConstant(string constantName, string csFile, int lineNum)
+        {
+            string NoneUpperSnakeCaseConstant = $"UpperSnakeCase Rule{Environment.NewLine}" +
+                        $"constant name: {constantName}{Environment.NewLine}" +
+                        $"File name: {csFile}{Environment.NewLine}" +
+                        $"line number: {lineNum}{Environment.NewLine}" +
+                        $"project name: {Path.GetFileNameWithoutExtension(csFile)}{Environment.NewLine}";
 
+            return NoneUpperSnakeCaseConstant;
+        }
     }
 }
