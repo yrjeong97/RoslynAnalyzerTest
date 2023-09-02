@@ -30,11 +30,16 @@ jobs:
 
       # NOTE: `since_last_remote_commit: true` is implied by default and falls back to the previous local commit.
 
-      - name: List all changed files
+      - name: Set changed .cs files as environment variable
         run: |
+          cs_files=""
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-            echo "$file was changed"
+            if [[ "$file" == *.cs ]]; then
+              cs_files="$cs_files $file"
+            fi
           done
+          echo "CHANGED_FILES=$cs_files" >> $GITHUB_ENV
+
 
       #- name: List changed files
       #  id: list_changed_files
