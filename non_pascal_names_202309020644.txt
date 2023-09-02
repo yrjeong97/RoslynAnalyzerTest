@@ -1,0 +1,12 @@
+Pascal Rule
+class name: dfskfjldk
+File name: Roslyn/NamingRule.cs
+line number: 176
+project name: NamingRule
+
+Pascal Rule
+property name: dddd
+File name: Roslyn/Program.cs
+class name: Program
+line number: 49
+project name: Program
