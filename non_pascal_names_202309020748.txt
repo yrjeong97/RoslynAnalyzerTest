@@ -1,0 +1,35 @@
+UpperSnakeCase Rule
+constant name: TTTT_TT
+File name: Roslyn/Program.cs
+line number: 49
+project name: Program
+
+UpperSnakeCase Rule
+constant name: TT_St
+File name: Roslyn/Program.cs
+line number: 50
+project name: Program
+
+UpperSnakeCase Rule
+constant name: Test
+File name: Roslyn/Program.cs
+line number: 51
+project name: Program
+
+UpperSnakeCase Rule
+constant name: testest
+File name: Roslyn/Program.cs
+line number: 52
+project name: Program
+
+UpperSnakeCase Rule
+constant name: MAX_INTEGER
+File name: Roslyn/Program.cs
+line number: 53
+project name: Program
+
+UpperSnakeCase Rule
+constant name: MAX1
+File name: Roslyn/Program.cs
+line number: 54
+project name: Program
