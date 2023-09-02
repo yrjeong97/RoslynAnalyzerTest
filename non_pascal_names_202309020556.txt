@@ -1,0 +1,6 @@
+Pascal Rule
+property name: test
+class name: Program
+File name: Roslyn/Program.cs
+line number: 49
+project name: Program
