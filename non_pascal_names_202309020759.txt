@@ -1,0 +1,11 @@
+Interface Name Rule
+interface name: Shape
+File name: Roslyn/Program.cs
+line number: 55
+project name: Program
+
+Interface Name Rule
+interface name: shape
+File name: Roslyn/Program.cs
+line number: 61
+project name: Program
