@@ -13,14 +13,14 @@ namespace Roslyn
         string[] csFilesList;
         string projectPath;
         string reportFilePath;
-        List<string> nonPascalNames;
+        List<string> nonNmingRule;
 
         public NamingRule(string[] csFilesList, string projectPath, string reportFilePath)
         {
             this.csFilesList = csFilesList;
             this.projectPath = projectPath;
             this.reportFilePath = reportFilePath;
-            this.nonPascalNames = new List<string>();
+            this.nonNmingRule = new List<string>();
         }
 
         public List<string> AnalyzeNamingRule()
@@ -41,7 +41,7 @@ namespace Roslyn
                 //인터페이스
                 AnalyzeInterfaceRule(root, csFile);
             }            
-            return nonPascalNames;
+            return nonNmingRule;
         }
 
         void AnayzePascalAndCamel(SyntaxNode root, string csFile)
@@ -52,7 +52,7 @@ namespace Roslyn
                 if (!IsPascalCase(className))
                 {
                     int lineNum = classDeclaration.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
-                    nonPascalNames.Add(WriteNamingRuleReport.WriteNonePascalClass(className, csFile, lineNum));
+                    nonNmingRule.Add(WriteNamingRuleReport.WriteNonePascalClass(className, csFile, lineNum));
                 }
 
                 foreach (var member in classDeclaration.Members)
@@ -63,7 +63,7 @@ namespace Roslyn
                         if (!IsPascalCase(methodName))
                         {
                             int lineNum = method.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
-                            nonPascalNames.Add(WriteNamingRuleReport.WriteNonePascalMethod(methodName, className, csFile, lineNum));
+                            nonNmingRule.Add(WriteNamingRuleReport.WriteNonePascalMethod(methodName, className, csFile, lineNum));
                         }
                         AnalyzeParameterCamel(method, csFile, className);
                     }
@@ -73,7 +73,7 @@ namespace Roslyn
                         if (!IsPascalCase(propertyName))
                         {
                             int lineNum = property.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
-                            nonPascalNames.Add(WriteNamingRuleReport.WriteNonePascalProperty(propertyName, className, csFile, lineNum));
+                            nonNmingRule.Add(WriteNamingRuleReport.WriteNonePascalProperty(propertyName, className, csFile, lineNum));
                         }
                     }
                     else if (member is FieldDeclarationSyntax field)
@@ -95,7 +95,7 @@ namespace Roslyn
                 if (!IsCamelCase(parameterName))
                 {
                     int lineNum = parameter.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
-                    nonPascalNames.Add(WriteNamingRuleReport.WriteNoneCamelParameter(parameterName, method.Identifier.ValueText, className, csFile, lineNum));
+                    nonNmingRule.Add(WriteNamingRuleReport.WriteNoneCamelParameter(parameterName, method.Identifier.ValueText, className, csFile, lineNum));
                 }
             }
         }
@@ -108,7 +108,7 @@ namespace Roslyn
                 if (!IsCamelCase(fieldName))
                 {
                     int lineNum = field.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
-                    nonPascalNames.Add(WriteNamingRuleReport.WriteNoneCamelVariable(fieldName, className, csFile,lineNum));
+                    nonNmingRule.Add(WriteNamingRuleReport.WriteNoneCamelVariable(fieldName, className, csFile,lineNum));
                 }
             }
         }
@@ -125,7 +125,7 @@ namespace Roslyn
                         if (!IsUpperSnakeCase(constantName))
                         {
                             int lineNum = constDeclaration.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
-                            nonPascalNames.Add(WriteNamingRuleReport.WriteNoneUpperSnakeCaseConstant(constantName, csFile, lineNum));
+                            nonNmingRule.Add(WriteNamingRuleReport.WriteNoneUpperSnakeCaseConstant(constantName, csFile, lineNum));
                         }
                     }
                 }
@@ -140,7 +140,7 @@ namespace Roslyn
                 if (!IsInterfaceNameValid(interfaceName))
                 {
                     int lineNum = interfaceDeclaration.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
-                    nonPascalNames.Add(WriteNamingRuleReport.WriteNoneValidInterfaceName(interfaceName, csFile, lineNum));
+                    nonNmingRule.Add(WriteNamingRuleReport.WriteNoneValidInterfaceName(interfaceName, csFile, lineNum));
                 }
             }
         }
@@ -162,7 +162,6 @@ namespace Roslyn
 
         bool IsInterfaceNameValid(string s)
         {
-            // 인터페이스 이름이 'I'로 시작하지 않으면 유효하지 않다고 판단
             return s.StartsWith("I", StringComparison.Ordinal);
         }
 

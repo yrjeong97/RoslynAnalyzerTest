@@ -21,14 +21,13 @@ class Program
             return;
         }
         var projectPath = Environment.GetEnvironmentVariable("PROJECT_PATH");
-        //var nonPascalNames = new List<string>();
 
         var csFilesList = changedFiles.Split(';'); 
         csFilesList = csFilesList.Skip(1).ToArray(); ;
 
         NamingRule namingRule = new NamingRule(csFilesList, projectPath, reportFilePath);
-        List<string> nonPascalNames = namingRule.AnalyzeNamingRule();
-        WriteResult(nonPascalNames, reportFilePath);
+        List<string> nonNmingRule = namingRule.AnalyzeNamingRule();
+        WriteResult(nonNmingRule, reportFilePath);
 
     }
 
@@ -42,21 +41,8 @@ class Program
         }
         else
         {
-            Console.WriteLine("All names follow PascalCase.");
+            Console.WriteLine("Everything follows naming rule.");
         }
-    }
-
-    void adkjfkd(int S)
-    {
-
-    }
-
-    const int dkfjk = 0;
-    const int TDS_dfd = 1;
-
-    interface adf
-    {
-
     }
 
 }
