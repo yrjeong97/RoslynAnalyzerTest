@@ -46,6 +46,13 @@ class Program
         }
     }
 
+    int Value;
+
+    void TESTMethod(string s)
+    {
+
+    }
+    
     string dddd
     {
         get;
