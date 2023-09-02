@@ -36,6 +36,7 @@ jobs:
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
             if [[ "$file" == *.cs ]]; then
               cs_files="$cs_files $file"
+              echo "$file added to cs_files"
             fi
           done
           echo "CHANGED_FILES=$cs_files" >> $GITHUB_ENV
