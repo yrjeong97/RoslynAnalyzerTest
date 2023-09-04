@@ -79,13 +79,7 @@ namespace Roslyn
                 var leftIdentifier = binaryExpression.Left as IdentifierNameSyntax;
                 var rightIdentifier = binaryExpression.Right as IdentifierNameSyntax;
 
-                if (leftIdentifier != null && uninitializedVariables.Contains(leftIdentifier.Identifier.Text))
-                {
-                    int lineNum = binaryExpression.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
-                    noneCodingStlye.Add(WriteNamingRuleReport.WriteStringConcatenationIssue(csFile, lineNum));
-                }
-
-                if (rightIdentifier != null && uninitializedVariables.Contains(rightIdentifier.Identifier.Text))
+                if (leftIdentifier != null && uninitializedVariables.Contains(leftIdentifier.Identifier.Text) || rightIdentifier != null && uninitializedVariables.Contains(rightIdentifier.Identifier.Text))
                 {
                     int lineNum = binaryExpression.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
                     noneCodingStlye.Add(WriteNamingRuleReport.WriteStringConcatenationIssue(csFile, lineNum));
