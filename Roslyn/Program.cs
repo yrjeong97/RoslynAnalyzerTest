@@ -36,7 +36,7 @@ class Program
 
         string d = "a";
         string b = "b";
-        string c = d + b;
+        string kkk = d + b;
     }
 
     static void WriteResult(List<string> reportList, string reportFilePath)
