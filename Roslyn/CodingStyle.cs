@@ -13,27 +13,39 @@ namespace Roslyn
         string[] csFilesList;
         string projectPath;
         string reportFilePath;
-        List<string> noneCodingStlye;
-        private Compilation compilation;
-        private SemanticModel semanticModel;
+        List<string> noneCodingStyle;
+        private readonly Compilation compilation;
+        private readonly SemanticModel semanticModel;
 
         public CodingStyle(string[] csFilesList, string projectPath, string reportFilePath)
         {
             this.csFilesList = csFilesList;
             this.projectPath = projectPath;
             this.reportFilePath = reportFilePath;
-            this.noneCodingStlye = new List<string>();
+            this.noneCodingStyle = new List<string>();
 
-            // 컴파일러 설정 초기화
-            var syntaxTrees = csFilesList.Select(file => CSharpSyntaxTree.ParseText(File.ReadAllText(Path.Combine(projectPath, file))));
-            compilation = CreateCompilation(syntaxTrees);
-            semanticModel = compilation.GetSemanticModel(syntaxTrees.First()); // 첫 번째 구문 트리를 선택하거나 적절히 선택
+            // CreateCompilation 메서드 수정
+            compilation = CreateCompilation();
+
+            // 컴파일러에 구문 트리 추가
+            foreach (var csFile in csFilesList)
+            {
+                var fullPath = Path.Combine(projectPath, csFile);
+                var code = File.ReadAllText(fullPath);
+                var csSyntaxTree = CSharpSyntaxTree.ParseText(code);
+                compilation = compilation.AddSyntaxTrees(csSyntaxTree);
+            }
+
+            // SemanticModel 초기화
+            var syntaxTree = compilation.SyntaxTrees.FirstOrDefault();
+            if (syntaxTree != null)
+            {
+                semanticModel = compilation.GetSemanticModel(syntaxTree);
+            }
         }
 
         public List<string> AnalyzeCodingStyle()
         {
-            var syntaxTrees = new List<SyntaxTree>();
-
             foreach (var csFile in csFilesList)
             {
                 var fullPath = Path.Combine(projectPath, csFile);
@@ -41,12 +53,10 @@ namespace Roslyn
                 var syntaxTree = CSharpSyntaxTree.ParseText(code);
                 var root = syntaxTree.GetRoot();
 
-                syntaxTrees.Add(syntaxTree); // 구문 트리를 목록에 추가
-
                 AnalyzeStringConcatenation(root, csFile);
             }
-            compilation = CreateCompilation(syntaxTrees);
-            return noneCodingStlye;
+
+            return noneCodingStyle;
         }
 
         void AnalyzeStringConcatenation(SyntaxNode root, string csFile)
@@ -67,27 +77,22 @@ namespace Roslyn
 
             foreach (var binaryExpression in root.DescendantNodes().OfType<BinaryExpressionSyntax>())
             {
-                // binaryExpression의 소속된 syntaxTree 확인
-                var syntaxTreeOfBinaryExpression = binaryExpression.SyntaxTree;
-                if (semanticModel.SyntaxTree == syntaxTreeOfBinaryExpression)
-                {
-                    // 왼쪽 및 오른쪽 피연산자의 형식 확인
-                    var leftType = semanticModel.GetTypeInfo(binaryExpression.Left).Type;
-                    var rightType = semanticModel.GetTypeInfo(binaryExpression.Right).Type;
+                // 왼쪽 및 오른쪽 피연산자의 형식 확인
+                var leftType = semanticModel.GetTypeInfo(binaryExpression.Left).Type;
+                var rightType = semanticModel.GetTypeInfo(binaryExpression.Right).Type;
 
-                    // 형식이 string이면서 변수 이름이 string 변수 목록에 포함되어 있는 경우 경고 추가
-                    if ((leftType?.SpecialType == SpecialType.System_String || rightType?.SpecialType == SpecialType.System_String) &&
-                        (leftType != null && stringVariables.Contains(leftType.Name) || rightType != null && stringVariables.Contains(rightType.Name)))
-                    {
-                        int lineNum = binaryExpression.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
-                        noneCodingStlye.Add(WriteNamingRuleReport.WriteStringConcatenationIssue(csFile, lineNum));
-                    }
+                // 형식이 string이면서 변수 이름이 string 변수 목록에 포함되어 있는 경우 경고 추가
+                if ((leftType?.SpecialType == SpecialType.System_String || rightType?.SpecialType == SpecialType.System_String) &&
+                    (leftType != null && stringVariables.Contains(leftType.Name) || rightType != null && stringVariables.Contains(rightType.Name)))
+                {
+                    int lineNum = binaryExpression.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
+                    noneCodingStyle.Add(WriteNamingRuleReport.WriteStringConcatenationIssue(csFile, lineNum));
                 }
             }
         }
 
-
-        private Compilation CreateCompilation(IEnumerable<SyntaxTree> syntaxTrees)
+        // CreateCompilation 메서드 수정
+        private Compilation CreateCompilation()
         {
             var references = AppDomain.CurrentDomain.GetAssemblies()
                 .Where(assembly => !assembly.IsDynamic)
@@ -95,8 +100,7 @@ namespace Roslyn
 
             return CSharpCompilation.Create("MyCompilation")
                 .WithOptions(new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary))
-                .AddReferences(references)
-                .AddSyntaxTrees(syntaxTrees); // syntaxTrees를 컴파일러에 직접 추가
+                .AddReferences(references);
         }
     }
 }
