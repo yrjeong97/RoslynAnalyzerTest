@@ -1,0 +1,9 @@
+String Concatenation Rule
+File name: Roslyn/CodingStyle.cs
+line number: 60
+project name: CodingStyle
+
+String Concatenation Rule
+File name: Roslyn/Program.cs
+line number: 39
+project name: Program
