@@ -41,53 +41,22 @@ namespace Roslyn
 
         void AnalyzeStringConcatenation(SyntaxNode root, string csFile)
         {
-            var uninitializedVariables = new HashSet<string>();
+            List<string> violations = new List<string>();
 
-            foreach (var declaration in root.DescendantNodes().OfType<VariableDeclarationSyntax>())
+            var binaryExpressions = root.DescendantNodes().OfType<BinaryExpressionSyntax>();
+            foreach (var binaryExpression in binaryExpressions)
             {
-                var variableType = declaration.Type as PredefinedTypeSyntax;
-                if (variableType != null && variableType.Keyword.Text == "string")
+                if (binaryExpression.Left is IdentifierNameSyntax leftIdentifier && binaryExpression.Right is IdentifierNameSyntax rightIdentifier)
                 {
-                    foreach (var variable in declaration.Variables)
+                    if (leftIdentifier.ToString() == "string" || rightIdentifier.ToString() == "string")
                     {
-                        if (variable.Initializer == null)
-                        {
-                            uninitializedVariables.Add(variable.Identifier.Text);
-                        }
+                        int lineNum = binaryExpression.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
+                        noneCodingStlye.Add(WriteNamingRuleReport.WriteStringConcatenationIssue(csFile, lineNum));
                     }
                 }
             }
-
-            foreach (var binaryExpression in root.DescendantNodes().OfType<BinaryExpressionSyntax>())
-            {
-                if (IsStringConcatenationRule(binaryExpression, uninitializedVariables))
-                {
-                    int lineNum = binaryExpression.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
-                    noneCodingStlye.Add(WriteNamingRuleReport.WriteStringConcatenationIssue(csFile, lineNum));
-                }
-            }
         }
-
-        bool IsStringConcatenationRule(BinaryExpressionSyntax binaryExpression, HashSet<string> uninitializedVariables)
-        {
-            if (IsVariableOrLiteral(binaryExpression.Left, uninitializedVariables) && IsVariableOrLiteral(binaryExpression.Right, uninitializedVariables))
-            {
-                return true;
-            }
-            return false;
-        }
-
-        bool IsVariableOrLiteral(ExpressionSyntax expression, HashSet<string> uninitializedVariables)
-        {
-            if (expression is IdentifierNameSyntax identifierNameSyntax)
-            {
-                if (uninitializedVariables.Contains(identifierNameSyntax.Identifier.Text))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
+            
        
 
         //void AnalyzeStringConcatenation(SyntaxNode root, string csFile)
