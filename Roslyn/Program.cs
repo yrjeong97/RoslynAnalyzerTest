@@ -34,9 +34,9 @@ class Program
         WriteResult(ruleViolation, reportFilePath);
 
 
-        string a = "a";
+        string d = "a";
         string b = "b";
-        string c = a + b;
+        string c = d + b;
     }
 
     static void WriteResult(List<string> reportList, string reportFilePath)

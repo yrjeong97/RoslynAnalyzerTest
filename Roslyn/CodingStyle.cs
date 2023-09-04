@@ -57,6 +57,7 @@ namespace Roslyn
                         int lineNum = rightLiteral.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
                         noneCodingStlye.Add(WriteNamingRuleReport.WriteStringConcatenationIssue(csFile, lineNum));
                     }
+                    noneCodingStlye.Add("here");
                 }
             }
         }
