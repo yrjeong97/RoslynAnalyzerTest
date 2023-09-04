@@ -35,7 +35,7 @@ class Program
 
         int num = 1;
         string str;
-        str = "strin";
+        str = "strn";
         string sss = num + str;
 
         string d = "a";
