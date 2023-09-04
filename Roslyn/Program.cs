@@ -38,8 +38,8 @@ class Program
         str = "strn";
         string sss = num + str;
 
-        string d = "a";
-        string b = "b";
+        string d = "ab";
+        string b = "bb";
         string rr = d + b;
 
         string a;
@@ -47,6 +47,12 @@ class Program
         a = "aa";
         c = "cc";
         string r2 = a + c;
+
+        int number1;
+        int number2;
+        number1 = 1;
+        number2 = 2;
+        int nubmers = number1 + number2;
     }
 
     static void WriteResult(List<string> reportList, string reportFilePath)

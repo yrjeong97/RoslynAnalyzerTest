@@ -41,22 +41,6 @@ namespace Roslyn
 
         void AnalyzeStringConcatenation(SyntaxNode root, string csFile)
         {
-            //foreach (var declaration in root.DescendantNodes().OfType<VariableDeclarationSyntax>())
-            //{
-            //    var variableType = declaration.Type as PredefinedTypeSyntax;
-            //    if (variableType != null && variableType.Keyword.Text == "string")
-            //    {
-            //        var variableName = declaration.Variables.First().Identifier.Text;
-            //        var assignmentExpression = declaration.Parent.DescendantNodes().OfType<BinaryExpressionSyntax>().FirstOrDefault();
-
-            //        if (assignmentExpression != null && assignmentExpression.Kind() == SyntaxKind.AddExpression)
-            //        {
-            //            int lineNum = assignmentExpression.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
-            //            noneCodingStlye.Add(WriteNamingRuleReport.WriteStringConcatenationIssue(csFile, lineNum));
-            //        }
-            //    }
-            //}
-
             var uninitializedVariables = new HashSet<string>();
 
             foreach (var declaration in root.DescendantNodes().OfType<VariableDeclarationSyntax>())
@@ -85,16 +69,6 @@ namespace Roslyn
                     noneCodingStlye.Add(WriteNamingRuleReport.WriteStringConcatenationIssue(csFile, lineNum));
                 }
             }
-        }
-
-        bool IsStringConcatenationRule(BinaryExpressionSyntax binaryExpression)
-        {
-            if (binaryExpression.Left is LiteralExpressionSyntax leftLiteral && leftLiteral.IsKind(SyntaxKind.StringLiteralExpression)
-                        && binaryExpression.Right is LiteralExpressionSyntax rightLiteral && rightLiteral.IsKind(SyntaxKind.StringLiteralExpression))
-            {
-                return true;
-            }
-            return false;
         }
     }
 }
