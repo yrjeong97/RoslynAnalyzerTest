@@ -33,6 +33,10 @@ class Program
         ruleViolation.AddRange(codingStyleViolation);
         WriteResult(ruleViolation, reportFilePath);
 
+        int num = 1;
+        string str;
+        str = "strin";
+        string sss = num + str;
 
         string d = "a";
         string b = "b";

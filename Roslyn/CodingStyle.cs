@@ -41,35 +41,56 @@ namespace Roslyn
 
         void AnalyzeStringConcatenation(SyntaxNode root, string csFile)
         {
+            //foreach (var declaration in root.DescendantNodes().OfType<VariableDeclarationSyntax>())
+            //{
+            //    var variableType = declaration.Type as PredefinedTypeSyntax;
+            //    if (variableType != null && variableType.Keyword.Text == "string")
+            //    {
+            //        var variableName = declaration.Variables.First().Identifier.Text;
+            //        var assignmentExpression = declaration.Parent.DescendantNodes().OfType<BinaryExpressionSyntax>().FirstOrDefault();
+
+            //        if (assignmentExpression != null && assignmentExpression.Kind() == SyntaxKind.AddExpression)
+            //        {
+            //            int lineNum = assignmentExpression.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
+            //            noneCodingStlye.Add(WriteNamingRuleReport.WriteStringConcatenationIssue(csFile, lineNum));
+            //        }
+            //    }
+            //}
+
+            var uninitializedVariables = new HashSet<string>();
+
             foreach (var declaration in root.DescendantNodes().OfType<VariableDeclarationSyntax>())
             {
                 var variableType = declaration.Type as PredefinedTypeSyntax;
                 if (variableType != null && variableType.Keyword.Text == "string")
                 {
-                    var variableName = declaration.Variables.First().Identifier.Text;
-                    var assignmentExpression = declaration.Parent.DescendantNodes().OfType<BinaryExpressionSyntax>().FirstOrDefault();
-
-                    if (assignmentExpression != null && assignmentExpression.Kind() == SyntaxKind.AddExpression)
+                    foreach (var variable in declaration.Variables)
                     {
-                        int lineNum = assignmentExpression.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
-                        noneCodingStlye.Add(WriteNamingRuleReport.WriteStringConcatenationIssue(csFile, lineNum));
+                        if (variable.Initializer == null)
+                        {
+                            uninitializedVariables.Add(variable.Identifier.Text);
+                        }
                     }
                 }
             }
 
-            //foreach (var binaryExpression in root.DescendantNodes().OfType<BinaryExpressionSyntax>())
-            //{
-            //    if (binaryExpression.Kind() == SyntaxKind.AddExpression)
-            //    {
-            //        if (binaryExpression.Left is LiteralExpressionSyntax leftLiteral && leftLiteral.IsKind(SyntaxKind.StringLiteralExpression)
-            //            && binaryExpression.Right is LiteralExpressionSyntax rightLiteral && rightLiteral.IsKind(SyntaxKind.StringLiteralExpression))
-            //        {
-            //            // Both sides are string literals
-            //            int lineNum = leftLiteral.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
-            //            noneCodingStlye.Add(WriteNamingRuleReport.WriteStringConcatenationIssue(csFile, lineNum));
-            //        }
-            //    }
-            //}
+            foreach (var binaryExpression in root.DescendantNodes().OfType<BinaryExpressionSyntax>())
+            {
+                var leftIdentifier = binaryExpression.Left as IdentifierNameSyntax;
+                var rightIdentifier = binaryExpression.Right as IdentifierNameSyntax;
+
+                if (leftIdentifier != null && uninitializedVariables.Contains(leftIdentifier.Identifier.Text))
+                {
+                    int lineNum = binaryExpression.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
+                    noneCodingStlye.Add(WriteNamingRuleReport.WriteStringConcatenationIssue(csFile, lineNum));
+                }
+
+                if (rightIdentifier != null && uninitializedVariables.Contains(rightIdentifier.Identifier.Text))
+                {
+                    int lineNum = binaryExpression.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
+                    noneCodingStlye.Add(WriteNamingRuleReport.WriteStringConcatenationIssue(csFile, lineNum));
+                }
+            }
         }
 
         bool IsStringConcatenationRule(BinaryExpressionSyntax binaryExpression)
