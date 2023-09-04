@@ -74,8 +74,8 @@ namespace Roslyn
                 //    int lineNum = binaryExpression.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
                 //    noneCodingStlye.Add(WriteNamingRuleReport.WriteStringConcatenationIssue(csFile, lineNum));
                 //}
-                else if (leftIdentifier != null && leftIdentifier.GetType() == typeof(string) ||
-                         rightIdentifier != null && rightIdentifier.GetType() == typeof(string))
+                else if (leftIdentifier != null && leftIdentifier.Identifier.GetType() == typeof(string) ||
+                         rightIdentifier != null && rightIdentifier.Identifier.GetType() == typeof(string))
                 { 
                     int lineNum = binaryExpression.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
                     noneCodingStlye.Add(WriteNamingRuleReport.WriteStringConcatenationIssue(csFile, lineNum));
