@@ -46,7 +46,7 @@ class Program
         string c;
         a = "aa";
         c = "cc";
-        rr = a + c;
+        string r2 = a + c;
     }
 
     static void WriteResult(List<string> reportList, string reportFilePath)
