@@ -14,8 +14,8 @@ namespace Roslyn
         string projectPath;
         string reportFilePath;
         List<string> noneCodingStlye;
-        private readonly Compilation compilation;
-        private readonly SemanticModel semanticModel;
+        private Compilation compilation;
+        private SemanticModel semanticModel;
 
         public CodingStyle(string[] csFilesList, string projectPath, string reportFilePath)
         {
@@ -32,6 +32,8 @@ namespace Roslyn
 
         public List<string> AnalyzeCodingStyle()
         {
+            var syntaxTrees = new List<SyntaxTree>();
+
             foreach (var csFile in csFilesList)
             {
                 var fullPath = Path.Combine(projectPath, csFile);
@@ -39,9 +41,11 @@ namespace Roslyn
                 var syntaxTree = CSharpSyntaxTree.ParseText(code);
                 var root = syntaxTree.GetRoot();
 
+                syntaxTrees.Add(syntaxTree); // 구문 트리를 목록에 추가
+
                 AnalyzeStringConcatenation(root, csFile);
             }
-
+            compilation = CreateCompilation(syntaxTrees);
             return noneCodingStlye;
         }
 
@@ -82,7 +86,7 @@ namespace Roslyn
             }
         }
 
-        // 추가: 컴파일러 설정 및 참조 추가
+
         private Compilation CreateCompilation(IEnumerable<SyntaxTree> syntaxTrees)
         {
             var references = AppDomain.CurrentDomain.GetAssemblies()
@@ -92,7 +96,7 @@ namespace Roslyn
             return CSharpCompilation.Create("MyCompilation")
                 .WithOptions(new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary))
                 .AddReferences(references)
-                .AddSyntaxTrees(syntaxTrees);
+                .AddSyntaxTrees(syntaxTrees); // syntaxTrees를 컴파일러에 직접 추가
         }
     }
 }
