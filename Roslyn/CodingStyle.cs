@@ -45,22 +45,46 @@ namespace Roslyn
             {
                 if (binaryExpression.Kind() == SyntaxKind.AddExpression)
                 {
-                    //if (binaryExpression.Left is LiteralExpressionSyntax leftLiteral && leftLiteral.IsKind(SyntaxKind.StringLiteralExpression))
-                    //{
-                    //    // Left side is a string literal
-                    //    int lineNum = leftLiteral.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
-                    //    noneCodingStlye.Add(WriteNamingRuleReport.WriteStringConcatenationIssue(csFile, lineNum));
-                    //}
-                    //else if (binaryExpression.Right is LiteralExpressionSyntax rightLiteral && rightLiteral.IsKind(SyntaxKind.StringLiteralExpression))
-                    //{
-                    //    // Right side is a string literal
-                    //    int lineNum = rightLiteral.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
-                    //    noneCodingStlye.Add(WriteNamingRuleReport.WriteStringConcatenationIssue(csFile, lineNum));
-                    //}
-                    int lineNum = binaryExpression.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
-                    noneCodingStlye.Add(WriteNamingRuleReport.WriteStringConcatenationIssue(csFile, lineNum));
+                    if (binaryExpression.Left is LiteralExpressionSyntax leftLiteral && leftLiteral.IsKind(SyntaxKind.StringLiteralExpression)
+                        && binaryExpression.Right is LiteralExpressionSyntax rightLiteral && rightLiteral.IsKind(SyntaxKind.StringLiteralExpression))
+                    {
+                        // Both sides are string literals
+                        int lineNum = leftLiteral.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
+                        noneCodingStlye.Add(WriteNamingRuleReport.WriteStringConcatenationIssue(csFile, lineNum));
+                    }
                 }
             }
+
+            //foreach (var binaryExpression in root.DescendantNodes().OfType<BinaryExpressionSyntax>())
+            //{
+            //    if (binaryExpression.Kind() == SyntaxKind.AddExpression)
+            //    {
+            //        if (binaryExpression.Left is LiteralExpressionSyntax leftLiteral && leftLiteral.IsKind(SyntaxKind.StringLiteralExpression))
+            //        {
+            //            // Left side is a string literal
+            //            int lineNum = leftLiteral.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
+            //            noneCodingStlye.Add(WriteNamingRuleReport.WriteStringConcatenationIssue(csFile, lineNum));
+            //        }
+            //        else if (binaryExpression.Right is LiteralExpressionSyntax rightLiteral && rightLiteral.IsKind(SyntaxKind.StringLiteralExpression))
+            //        {
+            //            // Right side is a string literal
+            //            int lineNum = rightLiteral.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
+            //            noneCodingStlye.Add(WriteNamingRuleReport.WriteStringConcatenationIssue(csFile, lineNum));
+            //        }
+            //        int lineNum = binaryExpression.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
+            //        noneCodingStlye.Add(WriteNamingRuleReport.WriteStringConcatenationIssue(csFile, lineNum));
+            //    }
+            //}
+        }
+
+        bool IsStringConcatenationRule(BinaryExpressionSyntax binaryExpression)
+        {
+            if (binaryExpression.Left is LiteralExpressionSyntax leftLiteral && leftLiteral.IsKind(SyntaxKind.StringLiteralExpression)
+                        && binaryExpression.Right is LiteralExpressionSyntax rightLiteral && rightLiteral.IsKind(SyntaxKind.StringLiteralExpression))
+            {
+                return true;
+            }
+            return false;
         }
     }
 }
