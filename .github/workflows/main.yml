@@ -23,12 +23,9 @@ jobs:
       - name: Set Project Path
         run: echo "PROJECT_PATH=$(pwd)" >> $GITHUB_ENV
 
-      # Example 1
       - name: Get changed files
         id: changed-files
         uses: tj-actions/changed-files@v38
-
-      # NOTE: `since_last_remote_commit: true` is implied by default and falls back to the previous local commit.
 
       - name: Set changed .cs files as environment variable
         run: |
@@ -42,30 +39,13 @@ jobs:
           echo "$cs_files"
           echo "CHANGED_FILES=$cs_files" >> $GITHUB_ENV
 
-
-      #- name: List changed files
-      #  id: list_changed_files
-      #  run: |
-      #    git fetch origin ${{ github.event.before }}:${{ github.event.before }}
-      #    changed_files=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} || true)
-      #    changed_cs_files=$(echo "$changed_files" | grep '\.cs$' || true)
-      #    echo git diff --name-only ${{ github.event.before }}:${{ github.event.before }}
-      #    echo "CHANGED_FILES=$changed_cs_files" >> $GITHUB_ENV
-
-      #- name: List all changed files
-      #  run: |
-      #    for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-      #      echo "$file was changed"            
-      #    done
-      #    echo "CHANGED_FILES=${{ steps.changed-files.outputs.all_changed_files }}" >> $GITHUB_ENV
-
       - name: Restore dependencies
         run: dotnet restore Roslyn/Roslyn.csproj
 
       - name: Analyze and Create Report File
         run: |
           timestamp=$(date +"%Y%m%d%H%M")
-          reportFilePath="non_pascal_names_${timestamp}.txt"
+          reportFilePath="coding_rule_violation_${timestamp}.txt"
           echo "Creating report file: $reportFilePath"
           echo "" > $reportFilePath
           echo "::set-output name=reportFilePath::$reportFilePath"

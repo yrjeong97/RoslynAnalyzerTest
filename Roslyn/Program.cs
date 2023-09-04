@@ -26,9 +26,17 @@ class Program
         csFilesList = csFilesList.Skip(1).ToArray(); ;
 
         NamingRule namingRule = new NamingRule(csFilesList, projectPath, reportFilePath);
-        List<string> nonNmingRule = namingRule.AnalyzeNamingRule();
-        WriteResult(nonNmingRule, reportFilePath);
+        CodingStyle codingStyle = new CodingStyle(csFilesList, projectPath, reportFilePath);
+        List<string> ruleViolation = namingRule.AnalyzeNamingRule();
+        List<string> codingStyleViolation = codingStyle.AnalyzeCodingStyle();
 
+        ruleViolation.AddRange(codingStyleViolation);
+        WriteResult(ruleViolation, reportFilePath);
+
+
+        string a = "a";
+        string b = "b";
+        string c = a + b;
     }
 
     static void WriteResult(List<string> reportList, string reportFilePath)
@@ -41,7 +49,7 @@ class Program
         }
         else
         {
-            Console.WriteLine("Everything follows naming rule.");
+            Console.WriteLine("Everything follows the coding rule.");
         }
     }
 

@@ -8,19 +8,19 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslyn
 {  
-    public class NamingRule
+    public class NamingRule : WriteNamingRuleReport
     {
         string[] csFilesList;
         string projectPath;
         string reportFilePath;
-        List<string> nonNmingRule;
+        List<string> nonNamingRule;
 
         public NamingRule(string[] csFilesList, string projectPath, string reportFilePath)
         {
             this.csFilesList = csFilesList;
             this.projectPath = projectPath;
             this.reportFilePath = reportFilePath;
-            this.nonNmingRule = new List<string>();
+            this.nonNamingRule = new List<string>();
         }
 
         public List<string> AnalyzeNamingRule()
@@ -41,7 +41,7 @@ namespace Roslyn
                 //인터페이스
                 AnalyzeInterfaceRule(root, csFile);
             }            
-            return nonNmingRule;
+            return nonNamingRule;
         }
 
         void AnayzePascalAndCamel(SyntaxNode root, string csFile)
@@ -52,7 +52,7 @@ namespace Roslyn
                 if (!IsPascalCase(className))
                 {
                     int lineNum = classDeclaration.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
-                    nonNmingRule.Add(WriteNamingRuleReport.WriteNonePascalClass(className, csFile, lineNum));
+                    nonNamingRule.Add(WriteNamingRuleReport.WriteNonePascalClass(className, csFile, lineNum));
                 }
 
                 foreach (var member in classDeclaration.Members)
@@ -63,7 +63,7 @@ namespace Roslyn
                         if (!IsPascalCase(methodName))
                         {
                             int lineNum = method.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
-                            nonNmingRule.Add(WriteNamingRuleReport.WriteNonePascalMethod(methodName, className, csFile, lineNum));
+                            nonNamingRule.Add(WriteNamingRuleReport.WriteNonePascalMethod(methodName, className, csFile, lineNum));
                         }
                         AnalyzeParameterCamel(method, csFile, className);
                     }
@@ -73,7 +73,7 @@ namespace Roslyn
                         if (!IsPascalCase(propertyName))
                         {
                             int lineNum = property.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
-                            nonNmingRule.Add(WriteNamingRuleReport.WriteNonePascalProperty(propertyName, className, csFile, lineNum));
+                            nonNamingRule.Add(WriteNamingRuleReport.WriteNonePascalProperty(propertyName, className, csFile, lineNum));
                         }
                     }
                     else if (member is FieldDeclarationSyntax field)
@@ -95,7 +95,7 @@ namespace Roslyn
                 if (!IsCamelCase(parameterName))
                 {
                     int lineNum = parameter.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
-                    nonNmingRule.Add(WriteNamingRuleReport.WriteNoneCamelParameter(parameterName, method.Identifier.ValueText, className, csFile, lineNum));
+                    nonNamingRule.Add(WriteNamingRuleReport.WriteNoneCamelParameter(parameterName, method.Identifier.ValueText, className, csFile, lineNum));
                 }
             }
         }
@@ -108,7 +108,7 @@ namespace Roslyn
                 if (!IsCamelCase(fieldName))
                 {
                     int lineNum = field.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
-                    nonNmingRule.Add(WriteNamingRuleReport.WriteNoneCamelVariable(fieldName, className, csFile,lineNum));
+                    nonNamingRule.Add(WriteNamingRuleReport.WriteNoneCamelVariable(fieldName, className, csFile,lineNum));
                 }
             }
         }
@@ -125,13 +125,12 @@ namespace Roslyn
                         if (!IsUpperSnakeCase(constantName))
                         {
                             int lineNum = constDeclaration.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
-                            nonNmingRule.Add(WriteNamingRuleReport.WriteNoneUpperSnakeCaseConstant(constantName, csFile, lineNum));
+                            nonNamingRule.Add(WriteNamingRuleReport.WriteNoneUpperSnakeCaseConstant(constantName, csFile, lineNum));
                         }
                     }
                 }
             }
         }
-
         void AnalyzeInterfaceRule(SyntaxNode root, string csFile)
         {
             foreach (var interfaceDeclaration in root.DescendantNodes().OfType<InterfaceDeclarationSyntax>())
@@ -140,7 +139,7 @@ namespace Roslyn
                 if (!IsInterfaceNameValid(interfaceName))
                 {
                     int lineNum = interfaceDeclaration.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
-                    nonNmingRule.Add(WriteNamingRuleReport.WriteNoneValidInterfaceName(interfaceName, csFile, lineNum));
+                    nonNamingRule.Add(WriteNamingRuleReport.WriteNoneValidInterfaceName(interfaceName, csFile, lineNum));
                 }
             }
         }
@@ -163,95 +162,8 @@ namespace Roslyn
         bool IsInterfaceNameValid(string s)
         {
             return s.StartsWith("I", StringComparison.Ordinal);
-        }
-
-       
+        }       
     }
 
-    static class WriteNamingRuleReport
-    {
-        static public string WriteNonePascalClass(string className, string csFile, int lineNum)
-        {
-            string NonePascalClass = $"Pascal Rule{Environment.NewLine}" +
-                        $"class name: {className}{Environment.NewLine}" +
-                        $"File name: {csFile}{Environment.NewLine}" +
-                        $"line number: {lineNum}{Environment.NewLine}" +
-                        $"project name: {Path.GetFileNameWithoutExtension(csFile)}{Environment.NewLine}";
-
-            return NonePascalClass;
-        }
-
-        static public string WriteNonePascalMethod(string methodName, string className, string csFile, int lineNum)
-        {
-
-            string NonePascalMethod = $"Pascal Rule{Environment.NewLine}" +
-                                $"method name: {methodName}{Environment.NewLine}" +
-                                $"File name: {csFile}{Environment.NewLine}" +
-                                $"class name: {className}{Environment.NewLine}" +
-                                $"line number: {lineNum}{Environment.NewLine}" +
-                                $"project name: {Path.GetFileNameWithoutExtension(csFile)}{Environment.NewLine}";
-
-            return NonePascalMethod;
-        }
-
-        static public string WriteNonePascalProperty(string propertyName, string className, string csFile, int lineNum)
-        {
-
-            string NonePascalProperty = $"Pascal Rule{Environment.NewLine}" +
-                                $"property name: {propertyName}{Environment.NewLine}" +
-                                $"File name: {csFile}{Environment.NewLine}" +
-                                $"class name: {className}{Environment.NewLine}" +
-                                $"line number: {lineNum}{Environment.NewLine}" +
-                                $"project name: {Path.GetFileNameWithoutExtension(csFile)}{Environment.NewLine}";
-
-            return NonePascalProperty;
-        }
-
-        static public string WriteNoneCamelParameter(string parameterName, string method, string className, string csFile, int lineNum)
-        {
-            string NoneCamelParameter = $"Camel Rule{Environment.NewLine}" +
-                        $"parameter name: {parameterName}{Environment.NewLine}" +
-                        $"method name: {method}{Environment.NewLine}" +
-                        $"class name: {className}{Environment.NewLine}" +
-                        $"File name: {csFile}{Environment.NewLine}" +
-                        $"line number: {lineNum}{Environment.NewLine}" +
-                        $"project name: {Path.GetFileNameWithoutExtension(csFile)}{Environment.NewLine}";
-
-            return NoneCamelParameter;
-        }
-
-        static public string WriteNoneCamelVariable(string fieldName, string className, string csFile, int lineNum)
-        {
-            string NoneCamelVariable = $"Camel Rule{Environment.NewLine}" +
-                        $"field name: {fieldName}{Environment.NewLine}" +
-                        $"class name: {className}{Environment.NewLine}" +
-                        $"File name: {csFile}{Environment.NewLine}" +
-                        $"line number: {lineNum}{Environment.NewLine}" +
-                        $"project name: {Path.GetFileNameWithoutExtension(csFile)}{Environment.NewLine}";
-
-            return NoneCamelVariable;
-        }
-
-        static public string WriteNoneUpperSnakeCaseConstant(string constantName, string csFile, int lineNum)
-        {
-            string NoneUpperSnakeCaseConstant = $"UpperSnakeCase Rule{Environment.NewLine}" +
-                        $"constant name: {constantName}{Environment.NewLine}" +
-                        $"File name: {csFile}{Environment.NewLine}" +
-                        $"line number: {lineNum}{Environment.NewLine}" +
-                        $"project name: {Path.GetFileNameWithoutExtension(csFile)}{Environment.NewLine}";
-
-            return NoneUpperSnakeCaseConstant;
-        }
-
-        static public string WriteNoneValidInterfaceName(string interfaceName, string csFile, int lineNum)
-        {
-            string NoneValidInterfaceName = $"Interface Name Rule{Environment.NewLine}" +
-                        $"interface name: {interfaceName}{Environment.NewLine}" +
-                        $"File name: {csFile}{Environment.NewLine}" +
-                        $"line number: {lineNum}{Environment.NewLine}" +
-                        $"project name: {Path.GetFileNameWithoutExtension(csFile)}{Environment.NewLine}";
-
-            return NoneValidInterfaceName;
-        }
-    }
+   
 }
