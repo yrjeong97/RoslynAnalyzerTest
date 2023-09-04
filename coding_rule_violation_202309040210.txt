@@ -1,4 +1,0 @@
-String Concatenation Rule
-File name: Roslyn/Program.cs
-line number: 49
-project name: Program

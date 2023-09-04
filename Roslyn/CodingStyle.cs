@@ -41,7 +41,7 @@ namespace Roslyn
 
         void AnalyzeStringConcatenation(SyntaxNode root, string csFile)
         {
-            var uninitializedVariables = new HashSet<string>();
+            var Variables = new HashSet<string>();
 
             foreach (var declaration in root.DescendantNodes().OfType<VariableDeclarationSyntax>())
             {
@@ -50,11 +50,7 @@ namespace Roslyn
                 {
                     foreach (var variable in declaration.Variables)
                     {
-                        uninitializedVariables.Add(variable.Identifier.Text);
-                        //if (variable.Initializer == null)
-                        //{
-                        //    uninitializedVariables.Add(variable.Identifier.Text);
-                        //}
+                        Variables.Add(variable.Identifier.Text);
                     }
                 }
             }
@@ -64,23 +60,11 @@ namespace Roslyn
                 var leftIdentifier = binaryExpression.Left as IdentifierNameSyntax;
                 var rightIdentifier = binaryExpression.Right as IdentifierNameSyntax;
 
-                if (leftIdentifier != null && uninitializedVariables.Contains(leftIdentifier.Identifier.Text) || rightIdentifier != null && uninitializedVariables.Contains(rightIdentifier.Identifier.Text))
+                if (leftIdentifier != null && Variables.Contains(leftIdentifier.Identifier.Text) || rightIdentifier != null && Variables.Contains(rightIdentifier.Identifier.Text))
                 {
                     int lineNum = binaryExpression.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
                     noneCodingStlye.Add(WriteNamingRuleReport.WriteStringConcatenationIssue(csFile, lineNum));
                 }
-                //else if (leftIdentifier != null && leftIdentifier.Identifier.Text == "string" ||
-                //         rightIdentifier != null && rightIdentifier.Identifier.Text == "string")
-                //{
-                //    int lineNum = binaryExpression.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
-                //    noneCodingStlye.Add(WriteNamingRuleReport.WriteStringConcatenationIssue(csFile, lineNum));
-                //}
-                //else if (leftIdentifier != null && leftIdentifier.Identifier.GetType() == typeof(string) ||
-                //         rightIdentifier != null && rightIdentifier.Identifier.GetType() == typeof(string))
-                //{ 
-                //    int lineNum = binaryExpression.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
-                //    noneCodingStlye.Add(WriteNamingRuleReport.WriteStringConcatenationIssue(csFile, lineNum));
-                //}
             }
         }
     }
