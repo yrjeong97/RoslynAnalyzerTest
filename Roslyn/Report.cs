@@ -13,44 +13,44 @@ namespace Roslyn
     {
         static public string WriteNonePascalClass(string className, string csFile, int lineNum)
         {
-            string NonePascalClass = $"Pascal Rule{Environment.NewLine}" +
+            string nonePascalClass = $"Pascal Rule{Environment.NewLine}" +
                         $"class name: {className}{Environment.NewLine}" +
                         $"File name: {csFile}{Environment.NewLine}" +
                         $"line number: {lineNum}{Environment.NewLine}" +
                         $"project name: {Path.GetFileNameWithoutExtension(csFile)}{Environment.NewLine}";
 
-            return NonePascalClass;
+            return nonePascalClass;
         }
 
         static public string WriteNonePascalMethod(string methodName, string className, string csFile, int lineNum)
         {
 
-            string NonePascalMethod = $"Pascal Rule{Environment.NewLine}" +
+            string nonePascalMethod = $"Pascal Rule{Environment.NewLine}" +
                                 $"method name: {methodName}{Environment.NewLine}" +
                                 $"File name: {csFile}{Environment.NewLine}" +
                                 $"class name: {className}{Environment.NewLine}" +
                                 $"line number: {lineNum}{Environment.NewLine}" +
                                 $"project name: {Path.GetFileNameWithoutExtension(csFile)}{Environment.NewLine}";
 
-            return NonePascalMethod;
+            return nonePascalMethod;
         }
 
         static public string WriteNonePascalProperty(string propertyName, string className, string csFile, int lineNum)
         {
 
-            string NonePascalProperty = $"Pascal Rule{Environment.NewLine}" +
+            string nonePascalProperty = $"Pascal Rule{Environment.NewLine}" +
                                 $"property name: {propertyName}{Environment.NewLine}" +
                                 $"File name: {csFile}{Environment.NewLine}" +
                                 $"class name: {className}{Environment.NewLine}" +
                                 $"line number: {lineNum}{Environment.NewLine}" +
                                 $"project name: {Path.GetFileNameWithoutExtension(csFile)}{Environment.NewLine}";
 
-            return NonePascalProperty;
+            return nonePascalProperty;
         }
 
         static public string WriteNoneCamelParameter(string parameterName, string method, string className, string csFile, int lineNum)
         {
-            string NoneCamelParameter = $"Camel Rule{Environment.NewLine}" +
+            string noneCamelParameter = $"Camel Rule{Environment.NewLine}" +
                         $"parameter name: {parameterName}{Environment.NewLine}" +
                         $"method name: {method}{Environment.NewLine}" +
                         $"class name: {className}{Environment.NewLine}" +
@@ -58,51 +58,61 @@ namespace Roslyn
                         $"line number: {lineNum}{Environment.NewLine}" +
                         $"project name: {Path.GetFileNameWithoutExtension(csFile)}{Environment.NewLine}";
 
-            return NoneCamelParameter;
+            return noneCamelParameter;
         }
 
         static public string WriteNoneCamelVariable(string fieldName, string className, string csFile, int lineNum)
         {
-            string NoneCamelVariable = $"Camel Rule{Environment.NewLine}" +
+            string noneCamelVariable = $"Camel Rule{Environment.NewLine}" +
                         $"field name: {fieldName}{Environment.NewLine}" +
                         $"class name: {className}{Environment.NewLine}" +
                         $"File name: {csFile}{Environment.NewLine}" +
                         $"line number: {lineNum}{Environment.NewLine}" +
                         $"project name: {Path.GetFileNameWithoutExtension(csFile)}{Environment.NewLine}";
 
-            return NoneCamelVariable;
+            return noneCamelVariable;
         }
 
         static public string WriteNoneUpperSnakeCaseConstant(string constantName, string csFile, int lineNum)
         {
-            string NoneUpperSnakeCaseConstant = $"UpperSnakeCase Rule{Environment.NewLine}" +
+            string noneUpperSnakeCaseConstant = $"UpperSnakeCase Rule{Environment.NewLine}" +
                         $"constant name: {constantName}{Environment.NewLine}" +
                         $"File name: {csFile}{Environment.NewLine}" +
                         $"line number: {lineNum}{Environment.NewLine}" +
                         $"project name: {Path.GetFileNameWithoutExtension(csFile)}{Environment.NewLine}";
 
-            return NoneUpperSnakeCaseConstant;
+            return noneUpperSnakeCaseConstant;
         }
 
         static public string WriteNoneValidInterfaceName(string interfaceName, string csFile, int lineNum)
         {
-            string NoneValidInterfaceName = $"Interface Name Rule{Environment.NewLine}" +
+            string noneValidInterfaceName = $"Interface Name Rule{Environment.NewLine}" +
                         $"interface name: {interfaceName}{Environment.NewLine}" +
                         $"File name: {csFile}{Environment.NewLine}" +
                         $"line number: {lineNum}{Environment.NewLine}" +
                         $"project name: {Path.GetFileNameWithoutExtension(csFile)}{Environment.NewLine}";
 
-            return NoneValidInterfaceName;
+            return noneValidInterfaceName;
         }
 
         static public string WriteStringConcatenationIssue(string csFile, int lineNum)
         {
-            string StringConcatenationIssue = $"String Concatenation Rule{Environment.NewLine}" +
+            string stringConcatenationIssue = $"String Concatenation Rule{Environment.NewLine}" +
                        $"File name: {csFile}{Environment.NewLine}" +
                        $"line number: {lineNum}{Environment.NewLine}" +
                        $"project name: {Path.GetFileNameWithoutExtension(csFile)}{Environment.NewLine}";
 
-            return StringConcatenationIssue;
+            return stringConcatenationIssue;       
+        }
+
+        static public string WriteMemberOrderIssue(string csFile, string className)
+        {
+            string unorderedMember = $"Unordered Member Rule{Environment.NewLine}" +
+                        $"class name: {className}{Environment.NewLine}" +
+                        $"File name: {csFile}{Environment.NewLine}" +
+                        $"project name: {Path.GetFileNameWithoutExtension(csFile)}{Environment.NewLine}";
+
+            return unorderedMember;
         }
     }
 }

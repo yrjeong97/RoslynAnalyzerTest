@@ -32,27 +32,6 @@ class Program
 
         ruleViolation.AddRange(codingStyleViolation);
         WriteResult(ruleViolation, reportFilePath);
-
-        int num =1111;
-        string str;
-        str = "strn";
-        string sss = num + str;
-
-        string d = "ab";
-        string b = "bb";
-        string rr = d + b;
-
-        string a;
-        string c;
-        a = "aa";
-        c = "cc";
-        string r2 = a + c;
-
-        int number1;
-        int number2;
-        number1 = 1;
-        number2 = 2;
-        int nubmers = number1 + number2;
     }
 
     static void WriteResult(List<string> reportList, string reportFilePath)
