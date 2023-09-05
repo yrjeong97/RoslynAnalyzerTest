@@ -23,41 +23,90 @@ namespace Roslyn
 
         public List<string> AnalyzeWrongCode()
         {
-            foreach(var csFile in csFilesList)
+            foreach (var csFile in csFilesList)
             {
                 var fullPath = Path.Combine(projectPath, csFile);
                 var code = File.ReadAllText(fullPath);
                 var syntaxTree = CSharpSyntaxTree.ParseText(code);
                 var root = syntaxTree.GetRoot();
 
-                AnalyzeUnusedVariable(root, csFile);
+                AnalyzeUnusedMembers(root, csFile);
             }
             return wrongCode;
         }
-        void AnalyzeUnusedVariable(SyntaxNode root, string csFile)
+
+        void AnalyzeUnusedMembers(SyntaxNode root, string csFile)
         {
-            var declaredVariables = root.DescendantNodes().OfType<VariableDeclaratorSyntax>().Select(variable => variable.Identifier.Text);
-
-            var usedVariables = root.DescendantNodes()
-                .OfType<IdentifierNameSyntax>()
-                .Select(identifier => identifier.Identifier.Text);
-
-            var unusedVariables = declaredVariables.Except(usedVariables);
-
-            foreach (var variable in unusedVariables)
+            var declaredMembers = new List<string>
             {
-                var className = Path.GetFileNameWithoutExtension(csFile);
-                var lineNum = GetLineNumberOfVariable(root, variable);
-                wrongCode.Add(WriteUnusedVariable(variable, className, csFile, lineNum));
+                "Variable", // 변수
+                "Constant", // 상수
+                "Field",    // 필드
+                "Property", // 속성
+                "Constructor", // 생성자
+                "Method" // 메서드
+            };
+
+            foreach (var declaredMember in declaredMembers)
+            {
+                var declaredMemberNames = root.DescendantNodes()
+                    .OfType<MemberDeclarationSyntax>()
+                    .Where(member => GetMemberType(member) == declaredMember)
+                    .Select(member => GetMemberName(member));
+
+                var usedMemberNames = root.DescendantNodes()
+                    .OfType<IdentifierNameSyntax>()
+                    .Select(identifier => identifier.Identifier.Text);
+
+                var unusedMemberNames = declaredMemberNames.Except(usedMemberNames);
+
+                foreach (var memberName in unusedMemberNames)
+                {
+                    var className = Path.GetFileNameWithoutExtension(csFile);
+                    var lineNum = GetLineNumberOfMember(root, memberName);
+                    wrongCode.Add(WriteUnusedMember(memberName, declaredMember, className, csFile, lineNum));
+                }
             }
         }
-        private int GetLineNumberOfVariable(SyntaxNode root, string variableName)
-        {
-            var variableDeclarations = root.DescendantNodes()
-                .OfType<VariableDeclaratorSyntax>()
-                .Where(variable => variable.Identifier.Text == variableName);
 
-            foreach (var declaration in variableDeclarations)
+        private string GetMemberType(MemberDeclarationSyntax member)
+        {
+            if (member is FieldDeclarationSyntax)
+                return "Field";
+            if (member is PropertyDeclarationSyntax)
+                return "Property";
+            if (member is ConstructorDeclarationSyntax)
+                return "Constructor";
+            if (member is MethodDeclarationSyntax)
+                return "Method";
+
+            return "";
+        }
+
+        private string GetMemberName(MemberDeclarationSyntax member)
+        {
+            if (member is FieldDeclarationSyntax fieldDeclaration)
+            {
+                var variable = fieldDeclaration.Declaration.Variables.FirstOrDefault();
+                return variable != null ? variable.Identifier.Text : "";
+            }
+            if (member is PropertyDeclarationSyntax propertyDeclaration)
+                return propertyDeclaration.Identifier.Text;
+            if (member is ConstructorDeclarationSyntax constructorDeclaration)
+                return constructorDeclaration.Identifier.Text;
+            if (member is MethodDeclarationSyntax methodDeclaration)
+                return methodDeclaration.Identifier.Text;
+
+            return "";
+        }
+
+        private int GetLineNumberOfMember(SyntaxNode root, string memberName)
+        {
+            var memberDeclarations = root.DescendantNodes()
+                .OfType<MemberDeclarationSyntax>()
+                .Where(member => GetMemberName(member) == memberName);
+
+            foreach (var declaration in memberDeclarations)
             {
                 var lineSpan = declaration.GetLocation().GetLineSpan();
                 if (lineSpan.IsValid)
@@ -66,7 +115,7 @@ namespace Roslyn
                 }
             }
 
-            return -1; // 변수를 찾지 못한 경우
+            return -1; // 멤버를 찾지 못한 경우
         }
     }
 }

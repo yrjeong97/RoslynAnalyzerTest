@@ -21,12 +21,6 @@ namespace Roslyn
             this.nonNamingRule = new List<string>();
         }
 
-        bool Attribute
-        {
-            get;
-            set;
-        }
-
         public List<string> AnalyzeNamingRule()
         {
             foreach (var csFile in csFilesList)
@@ -47,6 +41,12 @@ namespace Roslyn
             }      
             
             return nonNamingRule;
+        }
+
+        bool unusedAndunorderedAttribute
+        {
+            get;
+            set;
         }
 
         void AnayzePascalAndCamel(SyntaxNode root, string csFile)

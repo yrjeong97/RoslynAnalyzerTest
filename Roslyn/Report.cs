@@ -112,16 +112,17 @@ namespace Roslyn
             return unorderedMember;
         }
 
-        static public string WriteUnusedVariable(string variableName, string className, string csFile, int lineNum)
+        static public string WriteUnusedMember(string memberName, string declaredMember, string className, string csFile, int lineNum)
         {
-            string unusedVariable = $"Unused Variable{Environment.NewLine}" +
-                        $"Variable name: {variableName} {Environment.NewLine}" +
+            string unusedMember = $"Unused Member{Environment.NewLine}" +
+                        $"Member name: {memberName}{Environment.NewLine}" +
+                        $"Member type: {declaredMember}{Environment.NewLine}" +
                         $"Line number: {lineNum}{Environment.NewLine}" +
                         $"Class name: {className}{Environment.NewLine}" +
                         $"File name: {csFile}{Environment.NewLine}" +                        
                         $"Project name: {Path.GetFileNameWithoutExtension(csFile)}{Environment.NewLine}";
 
-            return unusedVariable;
+            return unusedMember;
         }
     }
 }
