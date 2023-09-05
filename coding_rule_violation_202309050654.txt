@@ -1,0 +1,11 @@
+Pascal Rule
+class name: Program
+File name: Roslyn/Program.cs
+line number: 5
+project name: Program
+
+Pascal Rule
+class name: Program
+File name: Roslyn/Program.cs
+line number: 11
+project name: Program
