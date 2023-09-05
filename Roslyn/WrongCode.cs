@@ -48,23 +48,25 @@ namespace Roslyn
             {
                 var className = Path.GetFileNameWithoutExtension(csFile);
                 var lineNum = GetLineNumberOfVariable(root, variable);
-                wrongCode.Add(WriteUnusedVariable(className, csFile, lineNum));
+                wrongCode.Add(WriteUnusedVariable(variable, className, csFile, lineNum));
             }
         }
-
         private int GetLineNumberOfVariable(SyntaxNode root, string variableName)
         {
-            var nodeContainingVariable = root.DescendantNodes()
-                .Where(node => node.ToString().Contains(variableName))
-                .FirstOrDefault();
+            var variableDeclarations = root.DescendantNodes()
+                .OfType<VariableDeclaratorSyntax>()
+                .Where(variable => variable.Identifier.Text == variableName);
 
-            if (nodeContainingVariable != null)
+            foreach (var declaration in variableDeclarations)
             {
-                var lineSpan = root.SyntaxTree.GetLineSpan(nodeContainingVariable.Span);
-                return lineSpan.StartLinePosition.Line + 1;
+                var lineSpan = declaration.GetLocation().GetLineSpan();
+                if (lineSpan.IsValid)
+                {
+                    return lineSpan.StartLinePosition.Line + 1;
+                }
             }
 
-            return -1;
+            return -1; // 변수를 찾지 못한 경우
         }
     }
 }

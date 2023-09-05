@@ -12,7 +12,7 @@ class Program
 {
     static void Main(string[] args)
     {
-        int a = 0;
+        int a = 1;
         int b;
         var reportFilePath = Environment.GetEnvironmentVariable("REPORT_FILE_PATH");
         var changedFiles = Environment.GetEnvironmentVariable("CHANGED_FILES");

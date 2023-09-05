@@ -115,7 +115,7 @@ namespace Roslyn
             return unorderedMember;
         }
 
-        static public string WriteUnusedVariable(string className, string csFile, int lineNum)
+        static public string WriteUnusedVariable(string variable, string className, string csFile, int lineNum)
         {
             string unusedVariable = $"Pascal Rule{Environment.NewLine}" +
                         $"class name: {className}{Environment.NewLine}" +
