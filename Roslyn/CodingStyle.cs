@@ -81,7 +81,7 @@ namespace Roslyn
             }
         }
 
-        public void AnalyzeMemberOrder(SyntaxNode root, string csFile)
+        void AnalyzeMemberOrder(SyntaxNode root, string csFile)
         {
             var classDeclarations = root.DescendantNodes().OfType<ClassDeclarationSyntax>();
 
