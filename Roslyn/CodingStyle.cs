@@ -13,11 +13,13 @@ namespace Roslyn
     {
         public string MemberName { get; set; }
         public string MemberType { get; set; }
+        public int LineNumber { get; set; }
 
-        public Member(string memberName, string memberType)
+        public Member(string memberName, string memberType, int lineNum)
         {
             this.MemberName = memberName;
             this.MemberType = memberType;
+            this.LineNumber = lineNum;
         }
     }
 
@@ -107,18 +109,15 @@ namespace Roslyn
                 var className = classDeclaration.Identifier.ValueText;
                 foreach (var unorderedMember in unorderedMembers)
                 {
-                    noneCodingStlye.Add(WriteMemberOrderIssue(unorderedMember.MemberName, csFile, className));
+                    noneCodingStlye.Add(WriteMemberOrderIssue(unorderedMember.MemberName, csFile, className, unorderedMember.LineNumber));
                 }
             }
-
         }
 
         private List<Member> CreateMemberList(SyntaxList<MemberDeclarationSyntax> members, string csFile)
         {
             // 클래스 내의 멤버 변수 목록 초기화
             var memberList = new List<Member>();
-            var fileName = csFile;
-            var projectName = Path.GetFileNameWithoutExtension(csFile);
 
             // 멤버 변수 순서를 검사하고 memberList에 추가
             foreach (var member in members)
@@ -127,36 +126,39 @@ namespace Roslyn
                 {
                     // 변수 타입을 얻어옵니다.
                     var memberName = fieldDeclaration.Declaration.Variables.First().Identifier.Text;
-                    memberList.Add(new Member(memberName, "Constant"));
+                    var lineNum = fieldDeclaration.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
+                    memberList.Add(new Member(memberName, "Constant", lineNum));
                 }
                 else if (member is PropertyDeclarationSyntax propertyDeclaration)
                 {
                     var propertyName = propertyDeclaration.Identifier.Text;
-                    memberList.Add(new Member(propertyName, "Property"));
+                    var lineNum = propertyDeclaration.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
+                    memberList.Add(new Member(propertyName, "Property", lineNum));
                 }
                 else if (member is ConstructorDeclarationSyntax constructorDeclaration)
                 {
                     var constructorName = constructorDeclaration.Identifier.Text;
-                    memberList.Add(new Member(constructorName, "Constructor"));
+                    var lineNum = constructorDeclaration.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
+                    memberList.Add(new Member(constructorName, "Constructor", lineNum));
                 }
                 else if (member is MethodDeclarationSyntax methodDeclaration)
                 {
                     var methodName = methodDeclaration.Identifier.Text;
-                    var methodType = methodDeclaration.ReturnType.ToString();
-
+                    var lineNum = methodDeclaration.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
                     if (methodDeclaration.Modifiers.Any(modifier => modifier.Kind() == SyntaxKind.PublicKeyword))
                     {
-                        memberList.Add(new Member(methodName, "Method"));
+                        memberList.Add(new Member(methodName, "Method", lineNum));
                     }
                     else
                     {
-                        memberList.Add(new Member(methodName, "PrivateMethod"));
+                        memberList.Add(new Member(methodName, "PrivateMethod", lineNum));
                     }
                 }
                 else if (member is ClassDeclarationSyntax nestedClassDeclaration)
                 {
                     var nestedClassName = nestedClassDeclaration.Identifier.Text;
-                    memberList.Add(new Member(nestedClassName, "NestedClass"));
+                    var lineNum = nestedClassDeclaration.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
+                    memberList.Add(new Member(nestedClassName, "NestedClass", lineNum));
                 }
                 // 상수를 추가하려면 추가적인 논리 필요
             }

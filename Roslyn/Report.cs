@@ -100,10 +100,11 @@ namespace Roslyn
             return stringConcatenationIssue;       
         }
 
-        static public string WriteMemberOrderIssue(string memberName, string csFile, string className)
+        static public string WriteMemberOrderIssue(string memberName, string csFile, string className, int lineNum)
         {
             string unorderedMember = $"Unordered Member Rule{Environment.NewLine}" +
                         $"Member name: {memberName}{Environment.NewLine}" +
+                        $"Line number: {lineNum}{Environment.NewLine}" +
                         $"Class name: {className}{Environment.NewLine}" +
                         $"File name: {csFile}{Environment.NewLine}" +
                         $"Project name: {Path.GetFileNameWithoutExtension(csFile)}{Environment.NewLine}";
