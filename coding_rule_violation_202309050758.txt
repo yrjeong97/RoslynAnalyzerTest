@@ -1,0 +1,133 @@
+Pascal Rule (Property)
+Property name: unusedAndunorderedAttribute
+Line number: 46
+Class name: NamingRule
+File name: Roslyn/NamingRule.cs
+Project name: NamingRule
+
+Unordered Member Rule
+Member name: unusedAndunorderedAttribute
+Line number: 46
+Class name: NamingRule
+File name: Roslyn/NamingRule.cs
+Project name: NamingRule
+
+Unused Member
+Member name: unusedAndunorderedAttribute
+Member type: Property
+Line number: 46
+Class name: NamingRule
+File name: Roslyn/NamingRule.cs
+Project name: NamingRule
+
+Unused Member
+Member name: NamingRule
+Member type: Constructor
+Line number: 17
+Class name: NamingRule
+File name: Roslyn/NamingRule.cs
+Project name: NamingRule
+
+Unused Member
+Member name: AnalyzeNamingRule
+Member type: Method
+Line number: 24
+Class name: NamingRule
+File name: Roslyn/NamingRule.cs
+Project name: NamingRule
+
+Unused Member
+Member name: WriteNonePascalClass
+Member type: Method
+Line number: 9
+Class name: Report
+File name: Roslyn/Report.cs
+Project name: Report
+
+Unused Member
+Member name: WriteNonePascalMethod
+Member type: Method
+Line number: 20
+Class name: Report
+File name: Roslyn/Report.cs
+Project name: Report
+
+Unused Member
+Member name: WriteNonePascalProperty
+Member type: Method
+Line number: 33
+Class name: Report
+File name: Roslyn/Report.cs
+Project name: Report
+
+Unused Member
+Member name: WriteNoneCamelParameter
+Member type: Method
+Line number: 46
+Class name: Report
+File name: Roslyn/Report.cs
+Project name: Report
+
+Unused Member
+Member name: WriteNoneCamelVariable
+Member type: Method
+Line number: 59
+Class name: Report
+File name: Roslyn/Report.cs
+Project name: Report
+
+Unused Member
+Member name: WriteNoneUpperSnakeCaseConstant
+Member type: Method
+Line number: 71
+Class name: Report
+File name: Roslyn/Report.cs
+Project name: Report
+
+Unused Member
+Member name: WriteNoneValidInterfaceName
+Member type: Method
+Line number: 82
+Class name: Report
+File name: Roslyn/Report.cs
+Project name: Report
+
+Unused Member
+Member name: WriteStringConcatenationIssue
+Member type: Method
+Line number: 93
+Class name: Report
+File name: Roslyn/Report.cs
+Project name: Report
+
+Unused Member
+Member name: WriteMemberOrderIssue
+Member type: Method
+Line number: 103
+Class name: Report
+File name: Roslyn/Report.cs
+Project name: Report
+
+Unused Member
+Member name: WriteUnusedMember
+Member type: Method
+Line number: 115
+Class name: Report
+File name: Roslyn/Report.cs
+Project name: Report
+
+Unused Member
+Member name: WrongCode
+Member type: Constructor
+Line number: 17
+Class name: WrongCode
+File name: Roslyn/WrongCode.cs
+Project name: WrongCode
+
+Unused Member
+Member name: AnalyzeWrongCode
+Member type: Method
+Line number: 24
+Class name: WrongCode
+File name: Roslyn/WrongCode.cs
+Project name: WrongCode
