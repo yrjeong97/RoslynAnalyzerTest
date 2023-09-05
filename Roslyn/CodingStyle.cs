@@ -26,6 +26,7 @@ namespace Roslyn
         string[] csFilesList;
         string projectPath;
         string reportFilePath;
+        List<string> noneCodingStlye;
 
         public CodingStyle(string[] csFilesList, string projectPath, string reportFilePath)
         {
@@ -34,7 +35,6 @@ namespace Roslyn
             this.reportFilePath = reportFilePath;
             this.noneCodingStlye = new List<string>();
         }
-        List<string> noneCodingStlye;
 
         public List<string> AnalyzeCodingStyle()
         {
