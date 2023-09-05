@@ -12,6 +12,8 @@ class Program
 {
     static void Main(string[] args)
     {
+        int a = 0;
+        int b;
         var reportFilePath = Environment.GetEnvironmentVariable("REPORT_FILE_PATH");
         var changedFiles = Environment.GetEnvironmentVariable("CHANGED_FILES");
 
@@ -27,10 +29,13 @@ class Program
 
         NamingRule namingRule = new NamingRule(csFilesList, projectPath);
         CodingStyle codingStyle = new CodingStyle(csFilesList, projectPath);
+        WrongCode wrongCode = new WrongCode(csFilesList, projectPath);
         List<string> ruleViolation = namingRule.AnalyzeNamingRule();
         List<string> codingStyleViolation = codingStyle.AnalyzeCodingStyle();
+        List<string> wrongCodeResult = wrongCode.AnalyzeWrongCode();
 
         ruleViolation.AddRange(codingStyleViolation);
+        ruleViolation.AddRange(wrongCodeResult);
         WriteResult(ruleViolation, reportFilePath);
     }
 

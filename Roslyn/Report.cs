@@ -114,5 +114,16 @@ namespace Roslyn
 
             return unorderedMember;
         }
+
+        static public string WriteUnusedVariable(string className, string csFile, int lineNum)
+        {
+            string unusedVariable = $"Pascal Rule{Environment.NewLine}" +
+                        $"class name: {className}{Environment.NewLine}" +
+                        $"File name: {csFile}{Environment.NewLine}" +
+                        $"line number: {lineNum}{Environment.NewLine}" +
+                        $"project name: {Path.GetFileNameWithoutExtension(csFile)}{Environment.NewLine}";
+
+            return unusedVariable;
+        }
     }
 }

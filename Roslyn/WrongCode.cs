@@ -8,7 +8,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslyn
 {
-    class WrongCode
+    class WrongCode : WriteNamingRuleReport
     {
         string[] csFilesList;
         string projectPath;
@@ -30,21 +30,41 @@ namespace Roslyn
                 var syntaxTree = CSharpSyntaxTree.ParseText(code);
                 var root = syntaxTree.GetRoot();
 
-                var declaredVariables = root.DescendantNodes().OfType<VariableDeclaratorSyntax>().Select(variable => variable.Identifier.Text);
+                AnalyzeUnusedVariable(root, csFile);
+            }
+            return wrongCode;
+        }
+        void AnalyzeUnusedVariable(SyntaxNode root, string csFile)
+        {
+            var declaredVariables = root.DescendantNodes().OfType<VariableDeclaratorSyntax>().Select(variable => variable.Identifier.Text);
 
-                var usedVariables = root.DescendantNodes()
-                    .OfType<IdentifierNameSyntax>()
-                    .Select(identifier => identifier.Identifier.Text);
+            var usedVariables = root.DescendantNodes()
+                .OfType<IdentifierNameSyntax>()
+                .Select(identifier => identifier.Identifier.Text);
 
-                var unusedVariables = declaredVariables.Except(usedVariables);
+            var unusedVariables = declaredVariables.Except(usedVariables);
 
-                foreach (var variable in unusedVariables)
-                {
-                    Console.WriteLine($"Unused variable: {variable}");
-                }
+            foreach (var variable in unusedVariables)
+            {
+                var className = Path.GetFileNameWithoutExtension(csFile);
+                var lineNum = GetLineNumberOfVariable(root, variable);
+                wrongCode.Add(WriteUnusedVariable(className, csFile, lineNum));
+            }
+        }
+
+        private int GetLineNumberOfVariable(SyntaxNode root, string variableName)
+        {
+            var nodeContainingVariable = root.DescendantNodes()
+                .Where(node => node.ToString().Contains(variableName))
+                .FirstOrDefault();
+
+            if (nodeContainingVariable != null)
+            {
+                var lineSpan = root.SyntaxTree.GetLineSpan(nodeContainingVariable.Span);
+                return lineSpan.StartLinePosition.Line + 1;
             }
 
-            return wrongCode;
+            return -1;
         }
     }
 }
