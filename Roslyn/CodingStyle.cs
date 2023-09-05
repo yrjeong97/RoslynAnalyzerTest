@@ -48,6 +48,7 @@ namespace Roslyn
                 AnalyzeStringConcatenation(root, csFile);
                 AnalyzeMemberOrder(root, csFile);
             }
+
             return noneCodingStlye;
         }
 
