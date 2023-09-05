@@ -3,17 +3,12 @@ using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System.Diagnostics;
 using Roslyn;
 
 class Program
 {
     static void Main(string[] args)
     {
-        int a = 2;
-        int b;
         var reportFilePath = Environment.GetEnvironmentVariable("REPORT_FILE_PATH");
         var changedFiles = Environment.GetEnvironmentVariable("CHANGED_FILES");
 

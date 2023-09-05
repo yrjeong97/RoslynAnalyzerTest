@@ -11,13 +11,13 @@ namespace Roslyn
 {
     public class Member
     {
-        public string MemberName { get; }
-        public string MemberType { get; }
+        public string MemberName { get; set; }
+        public string MemberType { get; set; }
 
         public Member(string memberName, string memberType)
         {
-            MemberName = memberName;
-            MemberType = memberType;
+            this.MemberName = memberName;
+            this.MemberType = memberType;
         }
     }
 
@@ -104,11 +104,10 @@ namespace Roslyn
                 // 순서 어긋난 멤버 변수 찾기
                 var unorderedMembers = GetUnorderedMembers(memberList, memberTypeIndexMap);
 
-                if (unorderedMembers.Count() > 0)
+                var className = classDeclaration.Identifier.ValueText;
+                foreach (var unorderedMember in unorderedMembers)
                 {
-                    var className = classDeclaration.Identifier.ValueText;
-
-                    noneCodingStlye.Add(WriteMemberOrderIssue(csFile, className));
+                    noneCodingStlye.Add(WriteMemberOrderIssue(unorderedMember.MemberName, csFile, className));
                 }
             }
 
@@ -179,6 +178,7 @@ namespace Roslyn
                 else if (currentIndex > memberTypeIndexMap[member.MemberType])
                 {
                     unorderedMembers.Add(member);
+                    currentIndex = memberTypeIndexMap[member.MemberType];
                 }
             }
 

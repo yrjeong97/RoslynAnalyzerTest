@@ -8,7 +8,7 @@
 
 //namespace Roslyn
 //{
-//    public class Member 
+//    public class Member
 //    {
 //        public string MemberName { get; }
 //        public string MemberType { get; }
@@ -66,7 +66,7 @@
 //                    // 순서 어긋난 멤버 변수 찾기
 //                    var unorderedMembers = GetUnorderedMembers(memberList, memberTypeIndexMap);
 
-//                    if(unorderedMembers.Count() > 0)
+//                    if (unorderedMembers.Count() > 0)
 //                    {
 //                        var className = classDeclaration.Identifier.ValueText;
 
@@ -147,7 +147,7 @@
 //                {
 //                    currentIndex = memberTypeIndexMap[member.MemberType];
 //                }
-//                else if(currentIndex > memberTypeIndexMap[member.MemberType])
+//                else if (currentIndex > memberTypeIndexMap[member.MemberType])
 //                {
 //                    unorderedMembers.Add(member);
 //                }

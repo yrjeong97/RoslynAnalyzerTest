@@ -12,7 +12,7 @@ namespace Roslyn
     {
         string[] csFilesList;
         string projectPath;
-        List<string> nonNamingRule;
+        
 
         public NamingRule(string[] csFilesList, string projectPath)
         {
@@ -20,6 +20,14 @@ namespace Roslyn
             this.projectPath = projectPath;
             this.nonNamingRule = new List<string>();
         }
+
+        bool Attribute
+        {
+            get;
+            set;
+        }
+
+        List<string> nonNamingRule;
 
         public List<string> AnalyzeNamingRule()
         {
