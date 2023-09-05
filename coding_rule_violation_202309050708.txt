@@ -1,0 +1,13 @@
+Pascal Rule
+Variable name: a 
+Class name: Program
+File name: Roslyn/Program.cs
+Line number: 15
+project name: Program
+
+Pascal Rule
+Variable name: b 
+Class name: Program
+File name: Roslyn/Program.cs
+Line number: 16
+project name: Program
