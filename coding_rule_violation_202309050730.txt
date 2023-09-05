@@ -1,0 +1,32 @@
+Unordered Member Rule
+Member name: Attribute
+Class name: NamingRule
+File name: Roslyn/NamingRule.cs
+Project name: NamingRule
+
+Unordered Member Rule
+Member name: nonNamingRule
+Class name: NamingRule
+File name: Roslyn/NamingRule.cs
+Project name: NamingRule
+
+Unused Variable
+Variable name: fileName 
+Line number: 120
+Class name: CodingStyle
+File name: Roslyn/CodingStyle.cs
+Project name: CodingStyle
+
+Unused Variable
+Variable name: projectName 
+Line number: 121
+Class name: CodingStyle
+File name: Roslyn/CodingStyle.cs
+Project name: CodingStyle
+
+Unused Variable
+Variable name: methodType 
+Line number: 145
+Class name: CodingStyle
+File name: Roslyn/CodingStyle.cs
+Project name: CodingStyle
