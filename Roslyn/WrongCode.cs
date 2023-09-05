@@ -30,7 +30,18 @@ namespace Roslyn
                 var syntaxTree = CSharpSyntaxTree.ParseText(code);
                 var root = syntaxTree.GetRoot();
 
+                var declaredVariables = root.DescendantNodes().OfType<VariableDeclaratorSyntax>().Select(variable => variable.Identifier.Text);
 
+                var usedVariables = root.DescendantNodes()
+                    .OfType<IdentifierNameSyntax>()
+                    .Select(identifier => identifier.Identifier.Text);
+
+                var unusedVariables = declaredVariables.Except(usedVariables);
+
+                foreach (var variable in unusedVariables)
+                {
+                    Console.WriteLine($"Unused variable: {variable}");
+                }
             }
 
             return wrongCode;

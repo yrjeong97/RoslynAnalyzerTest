@@ -25,14 +25,12 @@ namespace Roslyn
     {
         string[] csFilesList;
         string projectPath;
-        string reportFilePath;
         List<string> noneCodingStlye;
 
-        public CodingStyle(string[] csFilesList, string projectPath, string reportFilePath)
+        public CodingStyle(string[] csFilesList, string projectPath)
         {
             this.csFilesList = csFilesList;
             this.projectPath = projectPath;
-            this.reportFilePath = reportFilePath;
             this.noneCodingStlye = new List<string>();
         }
 
