@@ -23,6 +23,10 @@ namespace Roslyn
 
     public class CodingStyle : WriteNamingRuleReport
     {
+        string[] csFilesList;
+        string projectPath;
+        string reportFilePath;
+
         public CodingStyle(string[] csFilesList, string projectPath, string reportFilePath)
         {
             this.csFilesList = csFilesList;
@@ -30,10 +34,6 @@ namespace Roslyn
             this.reportFilePath = reportFilePath;
             this.noneCodingStlye = new List<string>();
         }
-
-        string[] csFilesList;
-        string projectPath;
-        string reportFilePath;
         List<string> noneCodingStlye;
 
         public List<string> AnalyzeCodingStyle()
