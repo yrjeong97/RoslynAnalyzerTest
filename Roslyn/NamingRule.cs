@@ -12,14 +12,12 @@ namespace Roslyn
     {
         string[] csFilesList;
         string projectPath;
-        string reportFilePath;
         List<string> nonNamingRule;
 
-        public NamingRule(string[] csFilesList, string projectPath, string reportFilePath)
+        public NamingRule(string[] csFilesList, string projectPath)
         {
             this.csFilesList = csFilesList;
             this.projectPath = projectPath;
-            this.reportFilePath = reportFilePath;
             this.nonNamingRule = new List<string>();
         }
 
@@ -40,7 +38,8 @@ namespace Roslyn
 
                 //인터페이스
                 AnalyzeInterfaceRule(root, csFile);
-            }            
+            }      
+            
             return nonNamingRule;
         }
 

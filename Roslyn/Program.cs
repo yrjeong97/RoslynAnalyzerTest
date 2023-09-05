@@ -26,7 +26,7 @@ class Program
         csFilesList = csFilesList.Skip(1).ToArray(); ;
 
         NamingRule namingRule = new NamingRule(csFilesList, projectPath, reportFilePath);
-        CodingStyle codingStyle = new CodingStyle(csFilesList, projectPath, reportFilePath);
+        CodingStyle codingStyle = new CodingStyle(csFilesList, projectPath);
         List<string> ruleViolation = namingRule.AnalyzeNamingRule();
         List<string> codingStyleViolation = codingStyle.AnalyzeCodingStyle();
 
