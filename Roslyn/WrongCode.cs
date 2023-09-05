@@ -43,8 +43,6 @@ namespace Roslyn
                 "Constant", // 상수
                 "Field",    // 필드
                 "Property", // 속성
-                "Constructor", // 생성자
-                "Method" // 메서드
             };
 
             foreach (var declaredMember in declaredMembers)
@@ -75,10 +73,6 @@ namespace Roslyn
                 return "Field";
             if (member is PropertyDeclarationSyntax)
                 return "Property";
-            if (member is ConstructorDeclarationSyntax)
-                return "Constructor";
-            if (member is MethodDeclarationSyntax)
-                return "Method";
 
             return "";
         }
@@ -114,7 +108,6 @@ namespace Roslyn
                     return lineSpan.StartLinePosition.Line + 1;
                 }
             }
-
             return -1; // 멤버를 찾지 못한 경우
         }
     }

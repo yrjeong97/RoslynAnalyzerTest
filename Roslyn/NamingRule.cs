@@ -38,15 +38,8 @@ namespace Roslyn
 
                 //인터페이스
                 AnalyzeInterfaceRule(root, csFile);
-            }      
-            
+            }                 
             return nonNamingRule;
-        }
-
-        bool unusedAndunorderedAttribute
-        {
-            get;
-            set;
         }
 
         void AnayzePascalAndCamel(SyntaxNode root, string csFile)
