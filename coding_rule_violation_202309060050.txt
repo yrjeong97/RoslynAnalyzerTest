@@ -1,0 +1,15 @@
+Camel Rule (Field)
+Field name: DFDSSSS
+Line number: 13
+Class name: NamingRule
+File name: Roslyn/NamingRule.cs
+Project name: NamingRule
+
+All;namingRule;
+Unused Member
+Member name: DFDSSSS
+Member type: Field
+Line number: 13
+Class name: NamingRule
+File name: Roslyn/NamingRule.cs
+Project name: NamingRule
