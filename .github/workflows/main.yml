@@ -32,12 +32,16 @@ jobs:
           cs_files=""
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
             if [[ "$file" == *.cs ]]; then
-              cs_files="$cs_files;$file"
+              FILES="$cs_files;$file"
               echo "$file added to cs_files"
             fi
           done
           echo "$cs_files"
-          echo "CHANGED_FILES=$cs_files" >> $GITHUB_ENV
+          if [[ "${{ github.event.head_commit.message }}" == *"#All"* ]]; then
+            all_files=$(find . -name '*.cs' -type f)
+            FILES=$(echo "$all_files" | tr '\n' ';')
+          fi
+          echo "FILES=$FILES" >> $GITHUB_ENV
 
       - name: Restore dependencies
         run: dotnet restore Roslyn/Roslyn.csproj
@@ -57,7 +61,7 @@ jobs:
           REPORT_FILE_PATH="${REPORT_FILE_PATH// /}"
           dotnet run --project Roslyn/Roslyn.csproj >> $REPORT_FILE_PATH
         env:
-          CHANGED_FILES: ${{env.CHANGED_FILES}}
+          FILES: ${{env.FILES}}
           PROJECT_PATH: ${{ env.PROJECT_PATH }}
           REPORT_FILE_PATH: ${{ env.REPORT_FILE_PATH }}
 

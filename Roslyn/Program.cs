@@ -10,7 +10,7 @@ class Program
     static void Main(string[] args)
     {
         var reportFilePath = Environment.GetEnvironmentVariable("REPORT_FILE_PATH");
-        var changedFiles = Environment.GetEnvironmentVariable("CHANGED_FILES");
+        var Files = Environment.GetEnvironmentVariable("FILES");
 
         if (string.IsNullOrEmpty(reportFilePath))
         {
@@ -19,7 +19,7 @@ class Program
         }
         var projectPath = Environment.GetEnvironmentVariable("PROJECT_PATH");
 
-        var csFilesList = changedFiles.Split(';'); 
+        var csFilesList = Files.Split(';'); 
         csFilesList = csFilesList.Skip(1).ToArray(); ;
 
         NamingRule namingRule = new NamingRule(csFilesList, projectPath);
