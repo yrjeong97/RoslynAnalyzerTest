@@ -11,6 +11,7 @@ class Program
     {
         var reportFilePath = Environment.GetEnvironmentVariable("REPORT_FILE_PATH");
         var changedFiles = Environment.GetEnvironmentVariable("CHANGED_FILES");
+        var keywords = Environment.GetEnvironmentVariable("KEYWORDS");
 
         if (string.IsNullOrEmpty(reportFilePath))
         {
@@ -28,6 +29,8 @@ class Program
         List<string> ruleViolation = namingRule.AnalyzeNamingRule();
         List<string> codingStyleViolation = codingStyle.AnalyzeCodingStyle();
         List<string> wrongCodeResult = wrongCode.AnalyzeWrongCode();
+
+        ruleViolation.Add(keywords);
 
         ruleViolation.AddRange(codingStyleViolation);
         ruleViolation.AddRange(wrongCodeResult);
