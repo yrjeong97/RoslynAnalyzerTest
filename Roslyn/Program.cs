@@ -26,7 +26,7 @@ class Program
 
         if (keywords == "")
         {
-            keywords = "All";
+            keywords = "All;";
         }
 
         var keywordList = keywords.Split(';');
