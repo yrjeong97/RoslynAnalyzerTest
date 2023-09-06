@@ -145,7 +145,7 @@ namespace Calculator
 
         }
 
-        private void GetClearSign(object inputClearSIgn)
+        private void getClearSign(object inputClearSIgn)
         {
             displayExpression = "";
         }
