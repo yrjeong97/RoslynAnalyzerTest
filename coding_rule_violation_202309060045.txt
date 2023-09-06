@@ -1,3 +1,0 @@
-
-/home/runner/work/RoslynAnalyzerTest/RoslynAnalyzerTest/Roslyn/NamingRule.cs(13,13): warning CS0169: The field 'NamingRule.DFDS' is never used [/home/runner/work/RoslynAnalyzerTest/RoslynAnalyzerTest/Roslyn/Roslyn.csproj]
-Everything follows the coding rule.

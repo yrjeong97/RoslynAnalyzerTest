@@ -1,4 +1,0 @@
-Unordered Member Rule
-class name: CodingStyle
-File name: Roslyn/CodingStyle.cs
-project name: CodingStyle

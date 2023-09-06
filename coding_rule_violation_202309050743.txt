@@ -1,6 +1,0 @@
-Unordered Member Rule
-Member name: Attribute
-Line number: 24
-Class name: NamingRule
-File name: Roslyn/NamingRule.cs
-Project name: NamingRule
