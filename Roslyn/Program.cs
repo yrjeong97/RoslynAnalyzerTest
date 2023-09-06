@@ -10,7 +10,8 @@ class Program
     static void Main(string[] args)
     {
         var reportFilePath = Environment.GetEnvironmentVariable("REPORT_FILE_PATH");
-        var Files = Environment.GetEnvironmentVariable("FILES");
+        var files = Environment.GetEnvironmentVariable("FILES");
+        var keywords = Environment.GetEnvironmentVariable("KEYWORDS");
 
         if (string.IsNullOrEmpty(reportFilePath))
         {
@@ -19,18 +20,49 @@ class Program
         }
         var projectPath = Environment.GetEnvironmentVariable("PROJECT_PATH");
 
-        var csFilesList = Files.Split(';'); 
-        csFilesList = csFilesList.Skip(1).ToArray(); ;
+        var csFilesList = files.Split(';').Skip(1).ToArray();
 
-        NamingRule namingRule = new NamingRule(csFilesList, projectPath);
-        CodingStyle codingStyle = new CodingStyle(csFilesList, projectPath);
-        WrongCode wrongCode = new WrongCode(csFilesList, projectPath);
-        List<string> ruleViolation = namingRule.AnalyzeNamingRule();
-        List<string> codingStyleViolation = codingStyle.AnalyzeCodingStyle();
-        List<string> wrongCodeResult = wrongCode.AnalyzeWrongCode();
+        var ruleViolation = new List<string>();
 
-        ruleViolation.AddRange(codingStyleViolation);
-        ruleViolation.AddRange(wrongCodeResult);
+        if (string.IsNullOrEmpty(keywords))
+        {
+            keywords = "All";
+        }
+
+        var keywordList = keywords.Split(';');
+        if (keywordList.Contains("All"))
+        {
+            var namingRule = new NamingRule(csFilesList, projectPath);
+            ruleViolation.AddRange(namingRule.AnalyzeNamingRule());
+
+            var codingStyle = new CodingStyle(csFilesList, projectPath);
+            ruleViolation.AddRange(codingStyle.AnalyzeCodingStyle());
+
+            var wrongCode = new WrongCode(csFilesList, projectPath);
+            ruleViolation.AddRange(wrongCode.AnalyzeWrongCode());
+        }
+        else
+        {
+            foreach (var keyword in keywordList)
+            {
+                switch (keyword)
+                {
+                    case "NamingRule":
+                        var namingRule = new NamingRule(csFilesList, projectPath);
+                        ruleViolation.AddRange(namingRule.AnalyzeNamingRule());
+                        break;
+                    case "CodingStyle":
+                        var codingStyle = new CodingStyle(csFilesList, projectPath);
+                        ruleViolation.AddRange(codingStyle.AnalyzeCodingStyle());
+                        break;
+                    case "WrongCode":
+                        var wrongCode = new WrongCode(csFilesList, projectPath);
+                        ruleViolation.AddRange(wrongCode.AnalyzeWrongCode());
+                        break;
+                }
+            }
+        }
+
         WriteResult(ruleViolation, reportFilePath);
     }
 
@@ -39,7 +71,6 @@ class Program
         if (reportList.Any())
         {
             var reportContent = string.Join(Environment.NewLine, reportList);
-
             File.WriteAllText(reportFilePath, reportContent);
         }
         else
@@ -47,5 +78,4 @@ class Program
             Console.WriteLine("Everything follows the coding rule.");
         }
     }
-
 }

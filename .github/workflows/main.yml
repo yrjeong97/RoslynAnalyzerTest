@@ -38,6 +38,17 @@ jobs:
           done
           echo "$cs_files"
           echo "CHANGED_FILES=$cs_files" >> $GITHUB_ENV
+          
+      - name: Extract Keywords from Description
+        run: |
+          # Extract the description from the last commit message
+          DESCRIPTION=$(git log -1 --pretty=%B)
+          
+          # Extract keywords (words after #) from the description
+          KEYWORDS=$(echo "$DESCRIPTION" | grep -o '#[^ ]*' | sed 's/#//g' | tr '\n' ';')
+          
+          echo "KEYWORDS=$KEYWORDS" >> $GITHUB_ENV
+
       - name: Restore dependencies
         run: dotnet restore Roslyn/Roslyn.csproj
 
@@ -56,6 +67,7 @@ jobs:
           REPORT_FILE_PATH="${REPORT_FILE_PATH// /}"
           dotnet run --project Roslyn/Roslyn.csproj >> $REPORT_FILE_PATH
         env:
+          KEYWORDS: ${{env.KEYWORDS}}
           CHANGED_FILES: ${{env.CHANGED_FILES}}
           PROJECT_PATH: ${{ env.PROJECT_PATH }}
           REPORT_FILE_PATH: ${{ env.REPORT_FILE_PATH }}
