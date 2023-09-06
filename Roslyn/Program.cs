@@ -27,6 +27,9 @@ class Program
         if (string.IsNullOrEmpty(keywords))
         {
             keywords = "All";
+            ruleViolation.Add("umm,,, all in");
+            WriteResult(ruleViolation, reportFilePath);
+            return;
         }
 
         var keywordList = keywords.Split(';');
