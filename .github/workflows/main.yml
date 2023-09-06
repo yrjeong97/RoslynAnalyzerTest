@@ -43,10 +43,10 @@ jobs:
         run: |
           # Extract the description from the last commit message
           DESCRIPTION=$(git log -1 --pretty=%B)
-          
-          # Extract keywords (words after #) from the description
-          KEYWORDS=$(echo "$DESCRIPTION" | grep -o '#[^ ]*' | sed 's/#//g' | tr '\n' ';')
-          
+    
+          # Extract keywords (words after #) from the description and remove leading/trailing spaces
+          KEYWORDS=$(echo "$DESCRIPTION" | grep -o '#[^ ]*' | sed 's/#//g' | tr -d ' ' | tr '\n' ';')
+    
           echo "KEYWORDS=$KEYWORDS" >> $GITHUB_ENV
 
       - name: Restore dependencies
