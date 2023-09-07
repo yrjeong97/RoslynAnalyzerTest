@@ -13,8 +13,7 @@ jobs:
       - name: Checkout WIND2-F-test repository
         uses: actions/checkout@v2
         with:
-          repository: yrjeong97/WIND2-F-test
-          ref: release
+          fetch-depth: 0
 
       - name: Checkout RoslynAnalyzerTest repository
         uses: actions/checkout@v2
