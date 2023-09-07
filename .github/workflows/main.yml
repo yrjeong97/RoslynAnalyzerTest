@@ -3,17 +3,26 @@ name: Roslyn Analysis Workflow
 on:
   push:
     branches:
-      - main
+      - '*release*'
 
 jobs:
   analyze-code:
     runs-on: ubuntu-latest
 
-    steps:    
-      - name: Checkout repository
+    steps:
+      - name: Checkout WIND2-F-test repository
         uses: actions/checkout@v2
-        with: 
-          fetch-depth: 0
+        with:
+          repository: yrjeong97/WIND2-F-test
+          ref: release
+
+      - name: Checkout RoslynAnalyzerTest repository
+        uses: actions/checkout@v2
+        with:
+          repository: yrjeong97/RoslynAnalyzerTest
+          ref: main
+          path: RoslynAnalyzerTest
+          submodules: 'recursive'
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v2
@@ -38,20 +47,22 @@ jobs:
           done
           echo "$cs_files"
           echo "CHANGED_FILES=$cs_files" >> $GITHUB_ENV
-          
+
       - name: Extract Keywords from Description
         run: |
           DESCRIPTION=$(git log -1 --pretty=%B)
-          KEYWORDS=$(echo "$DESCRIPTION" | grep -o '#[^ ]*' | sed 's/#//g' | tr -d ' ' | tr '\n' ';')    
+          KEYWORDS=$(echo "$DESCRIPTION" | grep -o '#[^ ]*' | sed 's/#//g' | tr -d ' ' | tr '\n' ';')
           echo "KEYWORDS=$KEYWORDS" >> $GITHUB_ENV
 
       - name: Restore dependencies
-        run: dotnet restore Roslyn/Roslyn.csproj
+        run: dotnet restore RoslynAnalyzerTest/Roslyn/Roslyn.csproj
 
       - name: Analyze and Create Report File
         run: |
           timestamp=$(date +"%Y%m%d%H%M")
-          reportFilePath="coding_rule_violation_${timestamp}.txt"
+          reportFolderPath="report" 
+          reportFilePath="$reportFolderPath/coding_rule_violation_${timestamp}.txt"  
+          mkdir -p "$reportFolderPath"  
           echo "Creating report file: $reportFilePath"
           echo "" > $reportFilePath
           echo "::set-output name=reportFilePath::$reportFilePath"
@@ -61,29 +72,36 @@ jobs:
       - name: Build and Run Roslyn Analysis
         run: |
           REPORT_FILE_PATH="${REPORT_FILE_PATH// /}"
-          dotnet run --project Roslyn/Roslyn.csproj >> $REPORT_FILE_PATH
+          dotnet run --project RoslynAnalyzerTest/Roslyn/Roslyn.csproj >> $REPORT_FILE_PATH
         env:
           KEYWORDS: ${{env.KEYWORDS}}
           CHANGED_FILES: ${{env.CHANGED_FILES}}
           PROJECT_PATH: ${{ env.PROJECT_PATH }}
-          REPORT_FILE_PATH: ${{ env.REPORT_FILE_PATH }}
 
       - name: Add Changes to Staging
         run: |
           git add $REPORT_FILE_PATH
         id: add_changes
 
-      - name: Commit and Push Report
+      - name: Set User Name and Email
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          git config user.name "yrjeong97"
-          git config user.email "yrjeong@ati2000.co.kr"
+          USER_NAME="${{ github.actor }}"
+          USER_EMAIL="${{ github.actor }}@users.noreply.github.com"
+          git config user.name "$USER_NAME"
+          git config user.email "$USER_EMAIL"
+
+      - name: Commit and Push Report
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PROJECT_PATH: ${{ env.PROJECT_PATH }}
+        run: |
           if [[ -n "$(git status --porcelain)" ]]; then
+            git add .
             git commit -m "Add coding standard report"
-            git diff-index --quiet HEAD -- ':!roslyn_report.txt' || git commit -m "Add non-PascalCase names report"
-            git push origin main
+            git diff-index --quiet HEAD -- ':!roslyn_report.txt' || git commit -m "Add coding standard report"
+            git push origin dev
           else
             echo "No changes to commit."
           fi
-        env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
-          PROJECT_PATH: ${{ env.PROJECT_PATH }}
