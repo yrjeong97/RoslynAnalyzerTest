@@ -15,14 +15,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Checkout RoslynAnalyzerTest repository
-        uses: actions/checkout@v2
-        with:
-          repository: yrjeong97/RoslynAnalyzerTest
-          ref: main
-          path: RoslynAnalyzerTest
-          submodules: 'recursive'
-
       - name: Setup .NET
         uses: actions/setup-dotnet@v2
         with:
