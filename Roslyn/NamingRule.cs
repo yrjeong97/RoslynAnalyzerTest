@@ -10,7 +10,7 @@ namespace Roslyn
 {  
     public class NamingRule : WriteNamingRuleReport
     {
-        int fdfs;
+        int FDSF;
         string[] csFilesList;
         string projectPath;
         List<string> nonNamingRule;

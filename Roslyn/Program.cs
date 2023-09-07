@@ -46,6 +46,7 @@ class Program
         }
         else
         {
+            Console.WriteLine("???.\n");
             Console.WriteLine("Everything follows the coding rule.");
         }
     }
