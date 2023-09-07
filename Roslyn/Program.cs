@@ -9,6 +9,7 @@ class Program
 {
     static void Main(string[] args)
     {
+        int TEST;
         var reportFilePath = Environment.GetEnvironmentVariable("REPORT_FILE_PATH");
         var changedFiles = Environment.GetEnvironmentVariable("CHANGED_FILES");
         var keywords = Environment.GetEnvironmentVariable("KEYWORDS");
